@@ -2,7 +2,6 @@ package com.softramen.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class PreferencesManager {
     private final String TAG = "PREFERENCES_MANAGER" ;

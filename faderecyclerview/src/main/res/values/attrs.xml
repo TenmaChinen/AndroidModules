@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="FadeRecyclerView">
+        <attr name="topFadingPercent" format="float" />
+        <attr name="bottomFadingPercent" format="float" />
+        <attr name="leftFadingPercent" format="float" />
+        <attr name="rightFadingPercent" format="float" />
+    </declare-styleable>
+
+</resources>

@@ -13,7 +13,7 @@ import com.softramen.modules.databinding.ActivityRetryDialogBinding;
 public class RetryDialogActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate( Bundle savedInstanceState ) {
+    protected void onCreate( final Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_retry_dialog );
 

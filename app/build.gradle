@@ -37,4 +37,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation project(path: ':custombuttons')
     implementation project(path: ':faderecyclerview')
+    implementation project(path: ':splashactivity')
+	implementation project(path: ':optionmenu')
 }

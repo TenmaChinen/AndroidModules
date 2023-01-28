@@ -11,15 +11,15 @@ import com.softramen.modules.R;
 
 public class CustomDialogsActivity extends AppCompatActivity {
 
-    private final String TAG = "MAIN_ACTIVITY" ;
+    private final String TAG = "MAIN_ACTIVITY";
 
     @Override
-    protected void onCreate( Bundle savedInstanceState ) {
+    protected void onCreate( final Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_custom_dialogs );
     }
 
-    public void onClick( View view ) {
+    public void onClick( final View view ) {
         final int viewId = view.getId();
         if ( viewId == R.id.btn_show ) {
 

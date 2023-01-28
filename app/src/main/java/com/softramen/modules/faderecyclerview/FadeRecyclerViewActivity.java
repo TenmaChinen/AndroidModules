@@ -13,7 +13,7 @@ import com.softramen.recyclerviews.FadeRecyclerView;
 public class FadeRecyclerViewActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate( Bundle savedInstanceState ) {
+    protected void onCreate( final Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_fade_recycler_view );
 

@@ -57,12 +57,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
 
-        public ViewHolder( @NonNull View itemView ) {
+        public ViewHolder( @NonNull final View itemView ) {
             super( itemView );
             textView = itemView.findViewById( R.id.text_view );
         }
 
-        public void setText( String text ) {
+        public void setText( final String text ) {
             textView.setText( text );
         }
     }

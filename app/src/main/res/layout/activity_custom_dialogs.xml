@@ -28,7 +28,6 @@
         android:onClick="onClick"
         android:padding="20dp"
         android:text="Button"
-        android:textAppearance="@style/GlobalTextAppearance"
         android:textColor="@color/white"
         android:textSize="20sp" />
 

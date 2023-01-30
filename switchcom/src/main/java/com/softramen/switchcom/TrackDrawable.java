@@ -1,4 +1,4 @@
-package com.example.switchcom;
+package com.softramen.switchcom;
 
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;

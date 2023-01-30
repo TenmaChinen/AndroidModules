@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="SwitchCom">
+		<attr name="trackColorActive" format="color"/>
+		<attr name="trackColorInactive" format="color"/>
+		<attr name="thumbColorActive" format="color"/>
+		<attr name="thumbColorInactive" format="color"/>
+		<attr name="switchHeight" format="dimension"/>
+	</declare-styleable>
+</resources>

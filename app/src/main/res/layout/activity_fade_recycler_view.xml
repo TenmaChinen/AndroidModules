@@ -6,7 +6,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:gravity="center"
 	android:orientation="vertical"
-	tools:context=".faderecyclerview.FadeRecyclerViewActivity">
+	tools:context=".fadeRecyclerView.FadeRecyclerViewActivity">
 
     <View
         android:layout_width="match_parent"

@@ -7,18 +7,20 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="Embedded JDK" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ButtonsCustom" />
+            <option value="$PROJECT_DIR$/DialogsCustom" />
+            <option value="$PROJECT_DIR$/FadeRecyclerView" />
+            <option value="$PROJECT_DIR$/OptionMenu" />
+            <option value="$PROJECT_DIR$/SettingsManager" />
+            <option value="$PROJECT_DIR$/SplashActivity" />
+            <option value="$PROJECT_DIR$/SwitchCom" />
+            <option value="$PROJECT_DIR$/Utils" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/custombuttons" />
-            <option value="$PROJECT_DIR$/customdialogs" />
-            <option value="$PROJECT_DIR$/dialogdebug" />
-            <option value="$PROJECT_DIR$/faderecyclerview" />
-            <option value="$PROJECT_DIR$/optionmenu" />
-            <option value="$PROJECT_DIR$/splashactivity" />
-            <option value="$PROJECT_DIR$/switchcom" />
-            <option value="$PROJECT_DIR$/utils" />
+            <option value="$PROJECT_DIR$/buildSrc" />
           </set>
         </option>
       </GradleProjectSettings>

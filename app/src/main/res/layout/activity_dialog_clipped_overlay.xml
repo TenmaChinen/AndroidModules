@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:gravity="top"
     android:orientation="vertical"
-    tools:context=".dialogs_activities.DialogClippedOverlayActivity">
+    tools:context=".dialogsActivities.DialogClippedOverlayActivity">
 
     <TextView
 

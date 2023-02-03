@@ -1,0 +1,41 @@
+plugins {
+	id 'com.android.library'
+}
+
+android {
+	namespace 'com.softramen.settingsmanager'
+	compileSdk 33
+
+	defaultConfig {
+		minSdk 21
+		targetSdk 33
+
+		consumerProguardFiles "consumer-rules.pro"
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+}
+
+dependencies {
+	implementation 'androidx.appcompat:appcompat:1.6.0'
+	implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//	implementation files('libs/OptionMenu-debug.aar')
+//	implementation files('libs/SwitchCom-debug.aar')
+	implementation project(path: ':OptionMenu')
+	implementation project(path: ':SwitchCom')
+}
+
+apply from: "$rootDir/buildSrc/methods.gradle"
+
+afterEvaluate {
+	copyAarFilesToLibraries()
+}

@@ -1,0 +1,12 @@
+def copyAarFilesToLibraries() {
+	copy {
+		from("$buildDir/outputs/aar") {
+			include "*.aar"
+		}
+		into "C:/Users/tenma/Desktop/Android Libraries"
+	}
+}
+
+ext {
+	copyAarFilesToLibraries = this.&copyAarFilesToLibraries
+}

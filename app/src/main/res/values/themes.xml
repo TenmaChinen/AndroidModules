@@ -14,7 +14,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-<!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowFullscreen">true</item>
         <item name="fontFamily">@font/connection</item>
         <item name="android:fontFamily">@font/connection</item>
 

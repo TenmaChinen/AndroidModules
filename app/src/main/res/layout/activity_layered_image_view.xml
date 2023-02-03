@@ -6,7 +6,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:gravity="center"
 	android:orientation="vertical"
-	tools:context=".buttons_activities.BiImageViewActivity">
+	tools:context=".buttonsActivities.BiImageViewActivity">
 
 	<com.softramen.custombuttons.BiImageView
 		android:id="@+id/layered_image_view_a"

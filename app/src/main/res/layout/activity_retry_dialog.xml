@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".dialogs_activities.AnnounceDialogActivity"
+        tools:context=".dialogsActivities.DialogAnnounceActivity"
         android:background="@color/gray">
 
         <TextView

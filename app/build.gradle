@@ -1,44 +1,45 @@
 plugins {
-    id 'com.android.application'
+	id 'com.android.application'
 }
 
 android {
-    namespace 'com.softramen.modules'
-    compileSdk 32
+	namespace 'com.softramen.modules'
+	compileSdk 33
 
-    defaultConfig {
-        applicationId "com.softramen.modules"
-        minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
-    }
+	defaultConfig {
+		applicationId "com.softramen.modules"
+		minSdk 21
+		targetSdk 33
+		versionCode 1
+		versionName "1.0"
+	}
 
-    dataBinding {
-        enabled = true
-    }
+	dataBinding {
+		enabled = true
+	}
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
-    implementation project(path: ':customdialogs')
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation project(path: ':custombuttons')
-    implementation project(path: ':faderecyclerview')
-//    implementation project(path: ':splashactivity')
-	implementation project(path: ':optionmenu')
-	implementation project(path: ':switchcom')
-	implementation project(path: ':splashactivity')
+	implementation 'androidx.appcompat:appcompat:1.6.0'
+	implementation 'com.google.android.material:material:1.8.0'
+	implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+	implementation project(path: ':DialogsCustom')
+	implementation project(path: ':ButtonsCustom')
+	implementation project(path: ':FadeRecyclerView')
+	implementation project(path: ':SplashActivity')
+	implementation project(path: ':OptionMenu')
+	implementation project(path: ':SwitchCom')
+	implementation project(path: ':SplashActivity')
+	implementation project(path: ':SettingsManager')
 }

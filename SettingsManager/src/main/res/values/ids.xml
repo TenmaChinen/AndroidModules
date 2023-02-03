@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<item name="setting_a"
+		type="id" />
+	<item name="setting_b"
+		type="id" />
+	<item name="setting_c"
+		type="id" />
+	<item name="setting_d"
+		type="id" />
+</resources>

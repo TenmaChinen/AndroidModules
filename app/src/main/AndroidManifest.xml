@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	>
 
@@ -15,15 +16,19 @@
 		tools:targetApi="31"
 		>
 		<activity
-			android:name=".switchcom.SwitchComActivity"
+			android:name=".dialogsActivities.DialogSettingsActivity"
 			android:exported="true"
 			/>
 		<activity
-			android:name=".optionmenu.OptionMenuActivity"
+			android:name=".switchCom.SwitchComActivity"
 			android:exported="true"
 			/>
 		<activity
-			android:name=".splashactivity.LaunchActivity"
+			android:name=".optionMenu.OptionMenuActivity"
+			android:exported="true"
+			/>
+		<activity
+			android:name=".splashActivity.LaunchActivity"
 			android:exported="true"
 			>
 			<meta-data
@@ -32,7 +37,7 @@
 				/>
 		</activity>
 		<activity
-			android:name=".dialogs_activities.DialogClippedOverlayActivity"
+			android:name=".dialogsActivities.DialogClippedOverlayActivity"
 			android:exported="true"
 			>
 			<meta-data
@@ -41,7 +46,7 @@
 				/>
 		</activity>
 		<activity
-			android:name=".faderecyclerview.FadeRecyclerViewActivity"
+			android:name=".fadeRecyclerView.FadeRecyclerViewActivity"
 			android:exported="true"
 			>
 			<meta-data
@@ -50,7 +55,7 @@
 				/>
 		</activity>
 		<activity
-			android:name=".buttons_activities.BiImageViewActivity"
+			android:name=".buttonsActivities.BiImageViewActivity"
 			android:exported="true"
 			>
 			<meta-data
@@ -65,7 +70,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".dialogs_activities.RetryDialogActivity"
+			android:name=".dialogsActivities.RetryDialogActivity"
 			android:exported="true"
 			>
 			<meta-data
@@ -74,7 +79,7 @@
 				/>
 		</activity>
 		<activity
-			android:name=".dialogs_activities.AnnounceDialogActivity"
+			android:name=".dialogsActivities.DialogAnnounceActivity"
 			android:exported="true"
 			>
 			<meta-data
@@ -83,7 +88,7 @@
 				/>
 		</activity>
 		<activity
-			android:name=".dialogs_activities.CustomDialogsActivity"
+			android:name=".dialogsActivities.DialogConfirmActivity"
 			android:exported="true"
 			>
 			<meta-data

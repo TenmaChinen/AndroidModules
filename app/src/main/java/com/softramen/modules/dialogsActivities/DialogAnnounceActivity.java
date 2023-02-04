@@ -3,8 +3,12 @@ package com.softramen.modules.dialogsActivities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
+import androidx.lifecycle.LifecycleOwner;
 import com.softramen.CustomDialogs.DialogAnnounce;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityDialogAnnounceBinding;
@@ -28,16 +32,28 @@ public class DialogAnnounceActivity extends AppCompatActivity {
 	};
 
 	private void showAnnounceDialog() {
-		final String announce = "Announce Dialog";
-		final DialogAnnounce dialogAnnounce = new DialogAnnounce( announce );
-		dialogAnnounce.setCallback( new DialogAnnounce.Callback() {
-			@Override
-			public void onAnnounceFinish() {
-				Log.d( TAG , "onAnnounceFinish" );
-			}
-		} );
-		dialogAnnounce.show( getSupportFragmentManager() , "DialogAnnounce" );
+		final String message = "Announcement\nMessage";
+		final DialogAnnounce dialogAnnounce = DialogAnnounce.newInstance( message );
+		final FragmentManager fragmentManager = getSupportFragmentManager();
+		final LifecycleOwner lifecycleOwner = this;
+		fragmentManager.setFragmentResultListener( DialogAnnounce.REQUEST_CODE, lifecycleOwner, fragmentResultListener );
+		dialogAnnounce.show( fragmentManager , "DialogAnnounce" );
 	}
 
+	private final FragmentResultListener fragmentResultListener = new FragmentResultListener() {
+	    @Override
+	    public void onFragmentResult( @NonNull final String requestCode , @NonNull final Bundle result ) {
+	        if ( requestCode.equals( DialogAnnounce.REQUEST_CODE ) ) {
+	            final int methodCode = result.getInt( DialogAnnounce.METHOD_CODE );
+	            switch ( methodCode ) {
+					case DialogAnnounce.ON_FINISH_ANNOUNCE:
+	                    Log.d( TAG , "ON_FINISH_ANNOUNCE" );
+	                    break;
+	                case DialogAnnounce.ON_CANCEL:
+	                    Log.d( TAG , "ON_CANCEL" );
+	            }
+	        }
+	    }
+	};
 
 }

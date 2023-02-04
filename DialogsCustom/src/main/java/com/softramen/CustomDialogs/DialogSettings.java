@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import com.softramen.CustomDialogs.utils.AnimationListener;
 import com.softramen.CustomDialogs.utils.Constants;
 import com.softramen.customdialogs.R;
@@ -28,19 +30,21 @@ import java.util.Map;
 public class DialogSettings extends DialogFragment {
 	private final String TAG = "DIALOG_SETTINGS";
 
+	public static final String REQUEST_CODE = "DIALOG_SETTINGS", METHOD_CODE = "METHOD_CODE";
+	public static final int ON_CLICK_SAVE = 0, ON_CANCEL = 1;
+
 	private final SettingsManager settingsManager = SettingsManager.getInstance();
 	private Animation windowEnterAnimation, windowExitAnimation;
+	private boolean onStartExecuted = false;
+	private int callbackId = ON_CANCEL;
 	private View inflatedView;
-	private int callbackId = -1;
-
-	private Callback callback;
 
 	@Override
 	public void onCreate( @Nullable final Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
 		setStyle( DialogFragment.STYLE_NO_FRAME , R.style.DialogBaseStyle );
-		windowEnterAnimation = AnimationUtils.loadAnimation( getContext() , R.anim.dialog_window_fade_in );
-		windowExitAnimation = AnimationUtils.loadAnimation( getContext() , R.anim.dialog_window_fade_out );
+		windowEnterAnimation = AnimationUtils.loadAnimation( getContext() , android.R.anim.fade_in );
+		windowExitAnimation = AnimationUtils.loadAnimation( getContext() , android.R.anim.fade_out );
 	}
 
 	@NonNull
@@ -72,8 +76,12 @@ public class DialogSettings extends DialogFragment {
 		final View.OnClickListener clickListener = view -> {
 			btnSave.setOnClickListener( null );
 			btnCancel.setOnClickListener( null );
-			callbackId = view.getId();
-			if ( callbackId == R.id.btn_save ) settingsListAdapter.updateSettingsChanges();
+			final int viewId = view.getId();
+			if ( viewId == R.id.btn_save ) {
+				settingsListAdapter.updateSettingsChanges();
+				callbackId = ON_CLICK_SAVE;
+			}
+			else if ( viewId == R.id.btn_cancel ) callbackId = ON_CANCEL;
 			startDismissAnimation();
 		};
 
@@ -85,6 +93,9 @@ public class DialogSettings extends DialogFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		if ( onStartExecuted ) return;
+		onStartExecuted = true;
+
 		final Dialog dialog = getDialog();
 		if ( dialog != null ) {
 			final Window window = dialog.getWindow();
@@ -95,34 +106,29 @@ public class DialogSettings extends DialogFragment {
 
 	@Override
 	public void onCancel( @NonNull final DialogInterface dialogInterface ) {
-		// This method will call dismiss method
-		// super.onCancel( dialogInterface );
+		// super.onCancel( dialogInterface ); This calls dismiss method
 		startDismissAnimation();
 	}
 
 	@Override
 	public void onDismiss( @NonNull final DialogInterface dialog ) {
+		sendResults();
 		super.onDismiss( dialog );
-		if ( callback != null ) {
-			if ( callbackId == R.id.btn_save ) callback.onClickSave();
-			else if ( callbackId == R.id.btn_cancel ) callback.onCancel();
-			else if ( callbackId == -1 ) {
-				callback.onCancel();
-			}
-		}
 	}
 
 	private void startDismissAnimation() {
-		windowExitAnimation.setAnimationListener( ( AnimationListener ) animation -> dismiss() );
+		// The post prevents from dismissing while the DialogFragment is still drawing
+		windowExitAnimation.setAnimationListener( ( AnimationListener ) animation -> inflatedView.post( this::dismiss ) );
 		inflatedView.startAnimation( windowExitAnimation );
 	}
 
-	public void setCallback( final Callback callback ) {
-		this.callback = callback;
-	}
-
-	public interface Callback {
-		default void onClickSave() {}
-		default void onCancel() {}
+	private void sendResults() {
+		final FragmentActivity fragmentActivity = getActivity();
+		if ( fragmentActivity != null ) {
+			final Bundle results = new Bundle();
+			results.putInt( METHOD_CODE , callbackId );
+			final FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+			fragmentManager.setFragmentResult( REQUEST_CODE , results );
+		}
 	}
 }

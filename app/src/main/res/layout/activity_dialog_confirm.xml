@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#303030"
+    android:background="#222121"
     tools:context=".dialogsActivities.DialogConfirmActivity">
 
     <TextView

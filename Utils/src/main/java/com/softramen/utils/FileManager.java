@@ -19,7 +19,7 @@ public class FileManager {
 
 	public String getString( final String filePath ) {
 
-		byte[] buffer;
+		final byte[] buffer;
 		try {
 			final InputStream inputStream = assetManager.open( filePath );
 			buffer = new byte[ inputStream.available() ];
@@ -28,7 +28,7 @@ public class FileManager {
 			return new String( buffer );
 		}
 		catch ( final IOException ioException ) {
-			Log.d( TAG , "getString >  ioException : " + ioException );
+			Log.e( TAG , "getString >  ioException : " + ioException );
 			return null;
 		}
 	}
@@ -42,7 +42,7 @@ public class FileManager {
 				bitmaps[ idx ] = BitmapFactory.decodeStream( inputStream );
 			}
 			catch ( final IOException ioException ) {
-				Log.d( TAG , "getBitmaps > ioException : " + ioException );
+				Log.e( TAG , "getBitmaps > ioException : " + ioException );
 			}
 		}
 		return bitmaps;

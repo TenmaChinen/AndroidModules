@@ -37,15 +37,6 @@
 				/>
 		</activity>
 		<activity
-			android:name=".dialogsActivities.DialogClippedOverlayActivity"
-			android:exported="true"
-			>
-			<meta-data
-				android:name="android.app.lib_name"
-				android:value=""
-				/>
-		</activity>
-		<activity
 			android:name=".fadeRecyclerView.FadeRecyclerViewActivity"
 			android:exported="true"
 			>
@@ -70,7 +61,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".dialogsActivities.RetryDialogActivity"
+			android:name=".dialogsActivities.DialogRetryActivity"
 			android:exported="true"
 			>
 			<meta-data

@@ -15,6 +15,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import com.softramen.CustomDialogs.utils.AnimationListener;
 import com.softramen.CustomDialogs.utils.Constants;
 import com.softramen.customdialogs.R;
@@ -22,19 +24,18 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class DialogConfirm extends DialogFragment {
-	private final String TAG = "CUSTOM_DIALOG";
+	private final String TAG = "DIALOG_CONFIRM";
+
+	public static final String REQUEST_CODE = "DIALOG_CONFIRM", METHOD_CODE = "METHOD_CODE";
+	public static final int ON_CLICK_POSITIVE = 0, ON_CLICK_NEGATIVE = 1, ON_CANCEL = 2;
 
 	private static final String ARG_MESSAGE = "ARG_MESSAGE";
 
 	private Animation windowEnterAnimation, windowExitAnimation;
+	private boolean onStartExecuted = false;
+	private int callbackId = ON_CANCEL;
 	private View inflatedView;
-	private int callbackId = -1;
 	private String message;
-
-	private Callback callback;
-
-	// No Need to Define Constructor
-	/// public DialogConfirm() {}
 
 	// Use this to ensure fragment's state is properly preserved across configuration changes
 	public static DialogConfirm newInstance( final String message ) {
@@ -50,14 +51,15 @@ public class DialogConfirm extends DialogFragment {
 		super.onCreate( savedInstanceState );
 		setStyle( DialogFragment.STYLE_NO_FRAME , R.style.DialogBaseStyle );
 
+		windowEnterAnimation = AnimationUtils.loadAnimation( getContext() , android.R.anim.fade_in );
+		windowExitAnimation = AnimationUtils.loadAnimation( getContext() , android.R.anim.fade_out );
+
 		// Retrieve arguments here
 		if ( getArguments() != null ) {
 			final Bundle args = getArguments();
 			message = args.getString( ARG_MESSAGE );
 		}
 
-		windowEnterAnimation = AnimationUtils.loadAnimation( getContext() , R.anim.dialog_window_fade_in );
-		windowExitAnimation = AnimationUtils.loadAnimation( getContext() , R.anim.dialog_window_fade_out );
 	}
 
 	@NonNull
@@ -70,7 +72,7 @@ public class DialogConfirm extends DialogFragment {
 		final Window window = dialog.getWindow();
 
 		// Enables to touch behind activity things ( Warning : This causes back button to also finish activity without waiting dialog )
-		window.setFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE , WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE );
+		// window.setFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE , WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE );
 		// To force disable default DialogFragment animations
 		window.setWindowAnimations( R.style.DialogNullWindowAnimationStyle );
 		window.setGravity( Gravity.BOTTOM );
@@ -90,7 +92,9 @@ public class DialogConfirm extends DialogFragment {
 		final View.OnClickListener clickListener = view -> {
 			btnPositive.setOnClickListener( null );
 			btnNegative.setOnClickListener( null );
-			callbackId = view.getId();
+			final int viewId = view.getId();
+			if ( viewId == R.id.btn_positive ) callbackId = ON_CLICK_POSITIVE;
+			else if ( viewId == R.id.btn_negative ) callbackId = ON_CLICK_NEGATIVE;
 			startDismissAnimation();
 		};
 
@@ -102,6 +106,9 @@ public class DialogConfirm extends DialogFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		if ( onStartExecuted ) return;
+		onStartExecuted = true;
+
 		final Dialog dialog = getDialog();
 		if ( dialog != null ) {
 			final Window window = dialog.getWindow();
@@ -112,35 +119,30 @@ public class DialogConfirm extends DialogFragment {
 
 	@Override
 	public void onCancel( @NonNull final DialogInterface dialogInterface ) {
-		// This method will call dismiss method
-		// super.onCancel( dialogInterface );
+		// super.onCancel( dialogInterface ); This calls dismiss method
 		startDismissAnimation();
 	}
 
 	@Override
 	public void onDismiss( @NonNull final DialogInterface dialog ) {
+		sendResults();
 		super.onDismiss( dialog );
-		if ( callback != null ) {
-			if ( callbackId == R.id.btn_positive ) callback.onClickPositive();
-			else if ( callbackId == R.id.btn_negative ) callback.onClickNegative();
-			else if ( callbackId == -1 ) {
-				callback.onCancel();
-			}
-		}
 	}
 
 	private void startDismissAnimation() {
-		windowExitAnimation.setAnimationListener( ( AnimationListener ) animation -> dismiss() );
+		windowExitAnimation.setAnimationListener( ( AnimationListener ) animation -> {
+			inflatedView.post( this::dismiss );
+		} );
 		inflatedView.startAnimation( windowExitAnimation );
 	}
 
-	public void setCallback( final Callback callback ) {
-		this.callback = callback;
-	}
-
-	public interface Callback {
-		default void onClickPositive() {}
-		default void onClickNegative() {}
-		default void onCancel() {}
+	private void sendResults() {
+		final FragmentActivity fragmentActivity = getActivity();
+		if ( fragmentActivity != null ) {
+			final Bundle results = new Bundle();
+			results.putInt( METHOD_CODE , callbackId );
+			final FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+			fragmentManager.setFragmentResult( REQUEST_CODE , results );
+		}
 	}
 }

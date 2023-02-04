@@ -21,7 +21,7 @@ public class JsonSerializer {
 				}
 			}
 		}
-		catch ( Exception e ) {
+		catch ( final Exception e ) {
 			Log.d( TAG , "ERROR : Json Matrix To Int Matrix" );
 		}
 		return intMatrix;
@@ -35,7 +35,7 @@ public class JsonSerializer {
 				intArray[ idx ] = jsonArray.getInt( idx );
 			}
 		}
-		catch ( Exception e ) {
+		catch ( final Exception e ) {
 			Log.d( TAG , "ERROR : Json Array To Int Array" );
 		}
 		return intArray;

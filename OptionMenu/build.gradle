@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	namespace 'com.softramen.optionmenu'
+	namespace 'com.softramen.optionMenu'
 	compileSdk 33
 
 	defaultConfig {

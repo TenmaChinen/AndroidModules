@@ -1,4 +1,4 @@
-package com.softramen.CustomDialogs.utils;
+package com.softramen.dialogsCustom.utils;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;

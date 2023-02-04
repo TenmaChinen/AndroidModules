@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.softramen.CustomDialogs.DialogRetry;
+import com.softramen.dialogsCustom.DialogRetry;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityRetryDialogBinding;
 

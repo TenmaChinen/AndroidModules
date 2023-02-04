@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import com.softramen.optionmenu.OptionMenu;
+import com.softramen.settingsManager.R;
 import com.softramen.settingsmanager.SettingsItem.Type;
 import java.util.HashMap;
 import java.util.Map;

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	namespace 'com.softramen.customdialogs'
+	namespace 'com.softramen.dialogsCustom'
 	compileSdk 33
 
 	defaultConfig {
@@ -28,10 +28,4 @@ android {
 dependencies {
 	implementation 'androidx.appcompat:appcompat:1.6.0'
 	implementation project(path: ':SettingsManager')
-}
-
-apply from: "$rootDir/buildSrc/methods.gradle"
-
-afterEvaluate {
-	copyAarFilesToLibraries()
 }

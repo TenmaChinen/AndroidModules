@@ -11,6 +11,7 @@ import android.widget.SpinnerAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
+import com.softramen.optionMenu.R;
 
 public class OptionMenu extends AppCompatSpinner {
 	private final String TAG = "OPTION_MENU";

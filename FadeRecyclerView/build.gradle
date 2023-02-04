@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	namespace 'com.softramen.recyclerviews'
+	namespace 'com.softramen.fadeRecyclerView'
 	compileSdk 33
 
 	defaultConfig {

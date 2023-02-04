@@ -1,4 +1,4 @@
-package com.softramen.custombuttons;
+package com.softramen.buttonsCustom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,11 +13,11 @@ public class BiImageView extends androidx.appcompat.widget.AppCompatImageView {
 	private Drawable textImage;
 	private float textImageHeightPercent;
 
-	public BiImageView( @NonNull Context context ) {
+	public BiImageView( @NonNull final Context context ) {
 		super( context );
 	}
 
-	public BiImageView( @NonNull Context context , @Nullable AttributeSet attrs ) {
+	public BiImageView( @NonNull final Context context , @Nullable final AttributeSet attrs ) {
 		super( context , attrs );
 
 		final TypedArray typedArray = context.getTheme().obtainStyledAttributes( attrs , R.styleable.layered_image_view , 0 , 0 );

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	namespace 'com.softramen.custombuttons'
+	namespace 'com.softramen.buttonsCustom'
 	compileSdk 33
 
 	defaultConfig {

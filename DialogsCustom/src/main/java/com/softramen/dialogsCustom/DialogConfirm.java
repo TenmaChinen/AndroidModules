@@ -1,8 +1,9 @@
-package com.softramen.CustomDialogs;
+package com.softramen.dialogsCustom;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,37 +13,35 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import com.softramen.CustomDialogs.utils.AnimationListener;
-import com.softramen.CustomDialogs.utils.Constants;
-import com.softramen.customdialogs.R;
+import com.softramen.dialogsCustom.utils.AnimationListener;
+import com.softramen.dialogsCustom.utils.Constants;
+import org.jetbrains.annotations.Nullable;
 
-public class DialogAnnounce extends DialogFragment {
-	private final String TAG = "ANNOUNCE_DIALOG";
 
-	public static final String REQUEST_CODE = "DIALOG_ANNOUNCE", METHOD_CODE = "METHOD_CODE";
-	public static final int ON_FINISH_ANNOUNCE = 0, ON_CANCEL = 1;
+public class DialogConfirm extends DialogFragment {
+	private final String TAG = "DIALOG_CONFIRM";
+
+	public static final String REQUEST_CODE = "DIALOG_CONFIRM", METHOD_CODE = "METHOD_CODE";
+	public static final int ON_CLICK_POSITIVE = 0, ON_CLICK_NEGATIVE = 1, ON_CANCEL = 2;
 
 	private static final String ARG_MESSAGE = "ARG_MESSAGE";
 
 	private Animation windowEnterAnimation, windowExitAnimation;
 	private boolean onStartExecuted = false;
 	private int callbackId = ON_CANCEL;
-	private TextView tvAnnounce;
-	private Animation animation;
 	private View inflatedView;
 	private String message;
 
 	// Use this to ensure fragment's state is properly preserved across configuration changes
-	public static DialogAnnounce newInstance( final String message ) {
-		final DialogAnnounce dialogAnnounce = new DialogAnnounce();
+	public static DialogConfirm newInstance( final String message ) {
+		final DialogConfirm dialogConfirm = new DialogConfirm();
 		final Bundle args = new Bundle();
 		args.putString( ARG_MESSAGE , message );
-		dialogAnnounce.setArguments( args );
-		return dialogAnnounce;
+		dialogConfirm.setArguments( args );
+		return dialogConfirm;
 	}
 
 	@Override
@@ -53,21 +52,12 @@ public class DialogAnnounce extends DialogFragment {
 		windowEnterAnimation = AnimationUtils.loadAnimation( getContext() , android.R.anim.fade_in );
 		windowExitAnimation = AnimationUtils.loadAnimation( getContext() , android.R.anim.fade_out );
 
-		animation = AnimationUtils.loadAnimation( getContext() , R.anim.fade_in_fade_out_animation );
-		animation.setAnimationListener( new AnimationListener() {
-			@Override
-			public void onAnimationEnd( final Animation animation ) {
-				callbackId = ON_FINISH_ANNOUNCE;
-				tvAnnounce.setVisibility( View.GONE );
-				startDismissAnimation();
-			}
-		} );
-
 		// Retrieve arguments here
 		if ( getArguments() != null ) {
 			final Bundle args = getArguments();
 			message = args.getString( ARG_MESSAGE );
 		}
+
 	}
 
 	@NonNull
@@ -76,54 +66,71 @@ public class DialogAnnounce extends DialogFragment {
 		final Dialog dialog = super.onCreateDialog( savedInstanceState );
 		dialog.setCancelable( false );
 		dialog.setCanceledOnTouchOutside( false );
+
+		final Window window = dialog.getWindow();
+
+		// Enables to touch behind activity things ( Warning : This causes back button to also finish activity without waiting dialog )
+		// window.setFlags( WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE , WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE );
+		// To force disable default DialogFragment animations
+		window.setWindowAnimations( R.style.DialogNullWindowAnimationStyle );
+		window.setGravity( Gravity.BOTTOM );
 		return dialog;
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView( @NonNull final LayoutInflater inflater , @Nullable final ViewGroup container , @Nullable final Bundle savedInstanceState ) {
-		inflatedView = inflater.inflate( R.layout.dialog_announce , container , false );
-		inflatedView.setOnClickListener( v -> dismiss() );
-		tvAnnounce = inflatedView.findViewById( R.id.tv_announce );
-		tvAnnounce.setText( message );
+		inflatedView = inflater.inflate( R.layout.dialog_confirm , container , false );
+		final TextView tvMessage = inflatedView.findViewById( R.id.tv_message );
+		final TextView btnPositive = inflatedView.findViewById( R.id.btn_positive );
+		final TextView btnNegative = inflatedView.findViewById( R.id.btn_negative );
+
+		tvMessage.setText( message );
+
+		final View.OnClickListener clickListener = view -> {
+			btnPositive.setOnClickListener( null );
+			btnNegative.setOnClickListener( null );
+			final int viewId = view.getId();
+			if ( viewId == R.id.btn_positive ) callbackId = ON_CLICK_POSITIVE;
+			else if ( viewId == R.id.btn_negative ) callbackId = ON_CLICK_NEGATIVE;
+			startDismissAnimation();
+		};
+
+		btnPositive.setOnClickListener( clickListener );
+		btnNegative.setOnClickListener( clickListener );
 		return inflatedView;
 	}
-
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		if ( onStartExecuted ) return;
 		onStartExecuted = true;
+
 		final Dialog dialog = getDialog();
 		if ( dialog != null ) {
 			final Window window = dialog.getWindow();
-			// window.setLayout( -1 , -1 );
 			window.setLayout( LayoutParams.MATCH_PARENT , Constants.Dialog.HEIGHT ); // Avoids cover AdMob Banners
 			inflatedView.startAnimation( windowEnterAnimation );
 		}
-		tvAnnounce.setAnimation( animation );
 	}
 
 	@Override
 	public void onCancel( @NonNull final DialogInterface dialogInterface ) {
-		// This method will call dismiss method
-		// super.onCancel( dialogInterface );
+		// super.onCancel( dialogInterface ); This calls dismiss method
 		startDismissAnimation();
 	}
 
 	@Override
 	public void onDismiss( @NonNull final DialogInterface dialog ) {
-		animation.cancel();
-		tvAnnounce.clearAnimation();
-		animation.setAnimationListener( null );
 		sendResults();
 		super.onDismiss( dialog );
 	}
 
 	private void startDismissAnimation() {
-		// The post prevents from dismissing while the DialogFragment is still drawing
-		windowExitAnimation.setAnimationListener( ( AnimationListener ) animation -> inflatedView.post( this::dismiss ) );
+		windowExitAnimation.setAnimationListener( ( AnimationListener ) animation -> {
+			inflatedView.post( this::dismiss );
+		} );
 		inflatedView.startAnimation( windowExitAnimation );
 	}
 

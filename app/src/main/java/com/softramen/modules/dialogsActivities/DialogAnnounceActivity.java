@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.LifecycleOwner;
-import com.softramen.CustomDialogs.DialogAnnounce;
+import com.softramen.dialogsCustom.DialogAnnounce;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityDialogAnnounceBinding;
 

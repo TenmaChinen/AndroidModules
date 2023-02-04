@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.LifecycleOwner;
-import com.softramen.CustomDialogs.DialogSettings;
+import com.softramen.dialogsCustom.DialogSettings;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityDialogSettingsBinding;
 import com.softramen.settingsmanager.SettingsItem;

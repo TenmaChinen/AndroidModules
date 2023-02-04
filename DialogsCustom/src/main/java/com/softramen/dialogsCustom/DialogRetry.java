@@ -1,4 +1,4 @@
-package com.softramen.CustomDialogs;
+package com.softramen.dialogsCustom;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -11,33 +11,25 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import com.softramen.CustomDialogs.utils.AnimationListener;
-import com.softramen.CustomDialogs.utils.Constants;
-import com.softramen.customdialogs.R;
-import com.softramen.settingsmanager.SettingsItem;
-import com.softramen.settingsmanager.SettingsListAdapter;
-import com.softramen.settingsmanager.SettingsManager;
-import org.jetbrains.annotations.Nullable;
-import java.util.Map;
+import com.softramen.dialogsCustom.utils.AnimationListener;
+import com.softramen.dialogsCustom.utils.Constants;
 
+public class DialogRetry extends DialogFragment {
 
-public class DialogSettings extends DialogFragment {
-	private final String TAG = "DIALOG_SETTINGS";
+	public static final String REQUEST_CODE = "DIALOG_RETRY", METHOD_CODE = "METHOD_CODE";
+	public static final int ON_CLICK_RETRY = 0, ON_CANCEL = 1;
 
-	public static final String REQUEST_CODE = "DIALOG_SETTINGS", METHOD_CODE = "METHOD_CODE";
-	public static final int ON_CLICK_SAVE = 0, ON_CANCEL = 1;
-
-	private final SettingsManager settingsManager = SettingsManager.getInstance();
 	private Animation windowEnterAnimation, windowExitAnimation;
 	private boolean onStartExecuted = false;
 	private int callbackId = ON_CANCEL;
 	private View inflatedView;
+	private ImageView btnRetry;
 
 	@Override
 	public void onCreate( @Nullable final Bundle savedInstanceState ) {
@@ -54,39 +46,30 @@ public class DialogSettings extends DialogFragment {
 		dialog.setCancelable( false );
 		dialog.setCanceledOnTouchOutside( false );
 
+		// Enables to touch behind activity things ( Warning : This causes back button to also finish activity without waiting dialog )
 		final Window window = dialog.getWindow();
 		window.setFlags( LayoutParams.FLAG_NOT_FOCUSABLE , LayoutParams.FLAG_NOT_FOCUSABLE );
+		// To force disable default DialogFragment animations
 		window.setWindowAnimations( R.style.DialogNullWindowAnimationStyle );
 		window.setGravity( Gravity.BOTTOM );
+
 		return dialog;
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView( @NonNull final LayoutInflater inflater , @Nullable final ViewGroup container , @Nullable final Bundle savedInstanceState ) {
-		inflatedView = inflater.inflate( R.layout.dialog_settings , container , false );
-		final ListView listView = inflatedView.findViewById( R.id.list_view );
-		final TextView btnSave = inflatedView.findViewById( R.id.btn_save );
-		final TextView btnCancel = inflatedView.findViewById( R.id.btn_cancel );
-
-		final Map<Integer, SettingsItem> settingsItemMap = settingsManager.getSettingsItemMap();
-		final SettingsListAdapter settingsListAdapter = new SettingsListAdapter( inflater.getContext() , settingsItemMap );
-		listView.setAdapter( settingsListAdapter );
+		inflatedView = inflater.inflate( R.layout.dialog_retry , container , false );
+		btnRetry = inflatedView.findViewById( R.id.btn_retry );
 
 		final View.OnClickListener clickListener = view -> {
-			btnSave.setOnClickListener( null );
-			btnCancel.setOnClickListener( null );
+			btnRetry.setOnClickListener( null );
 			final int viewId = view.getId();
-			if ( viewId == R.id.btn_save ) {
-				settingsListAdapter.updateSettingsChanges();
-				callbackId = ON_CLICK_SAVE;
-			}
-			else if ( viewId == R.id.btn_cancel ) callbackId = ON_CANCEL;
+			if ( viewId == R.id.btn_retry ) callbackId = ON_CLICK_RETRY;
 			startDismissAnimation();
 		};
 
-		btnSave.setOnClickListener( clickListener );
-		btnCancel.setOnClickListener( clickListener );
+		btnRetry.setOnClickListener( clickListener );
 		return inflatedView;
 	}
 
@@ -102,11 +85,16 @@ public class DialogSettings extends DialogFragment {
 			window.setLayout( LayoutParams.MATCH_PARENT , Constants.Dialog.HEIGHT ); // Avoids cover AdMob Banners
 			inflatedView.startAnimation( windowEnterAnimation );
 		}
+
+		final Animation popAnimation = AnimationUtils.loadAnimation( getContext() , R.anim.pop_animation );
+		popAnimation.setStartOffset( 100 );
+		btnRetry.startAnimation( popAnimation );
 	}
 
 	@Override
 	public void onCancel( @NonNull final DialogInterface dialogInterface ) {
-		// super.onCancel( dialogInterface ); This calls dismiss method
+		// This method will call dismiss method
+		// super.onCancel( dialogInterface );
 		startDismissAnimation();
 	}
 
@@ -116,11 +104,12 @@ public class DialogSettings extends DialogFragment {
 		super.onDismiss( dialog );
 	}
 
+
 	private void startDismissAnimation() {
-		// The post prevents from dismissing while the DialogFragment is still drawing
 		windowExitAnimation.setAnimationListener( ( AnimationListener ) animation -> inflatedView.post( this::dismiss ) );
 		inflatedView.startAnimation( windowExitAnimation );
 	}
+
 
 	private void sendResults() {
 		final FragmentActivity fragmentActivity = getActivity();

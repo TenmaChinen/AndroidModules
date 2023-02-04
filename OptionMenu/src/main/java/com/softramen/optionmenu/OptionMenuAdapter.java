@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.softramen.optionMenu.R;
 
 public class OptionMenuAdapter extends BaseAdapter {
 	private final String TAG = "OPTION_MENU_ADAPTER";

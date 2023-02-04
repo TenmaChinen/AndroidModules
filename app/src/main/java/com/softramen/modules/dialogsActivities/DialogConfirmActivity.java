@@ -1,6 +1,5 @@
 package com.softramen.modules.dialogsActivities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,21 +7,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
-import com.softramen.CustomDialogs.DialogConfirm;
+import com.softramen.dialogsCustom.DialogConfirm;
 import com.softramen.modules.R;
 
 public class DialogConfirmActivity extends AppCompatActivity {
 
 	private final String TAG = "DIALOG_CONFIRM_ACTIVITY";
-	private Activity activity;
 
 	@Override
 	protected void onCreate( final Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.activity_dialog_confirm );
-		// showDialogConfirm();
-
-		activity = this;
+		showDialogConfirm();
 	}
 
 	public void onClick( final View view ) {

@@ -8,7 +8,7 @@
 	android:orientation="vertical"
 	tools:context=".buttonsActivities.BiImageViewActivity">
 
-	<com.softramen.custombuttons.BiImageView
+	<com.softramen.buttonsCustom.BiImageView
 		android:id="@+id/layered_image_view_a"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

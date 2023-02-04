@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	namespace 'com.softramen.settingsmanager'
+	namespace 'com.softramen.settingsManager'
 	compileSdk 33
 
 	defaultConfig {
@@ -28,14 +28,8 @@ android {
 dependencies {
 	implementation 'androidx.appcompat:appcompat:1.6.0'
 	implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-//	implementation files('libs/OptionMenu-debug.aar')
-//	implementation files('libs/SwitchCom-debug.aar')
-	implementation project(path: ':OptionMenu')
-	implementation project(path: ':SwitchCom')
-}
-
-apply from: "$rootDir/buildSrc/methods.gradle"
-
-afterEvaluate {
-	copyAarFilesToLibraries()
+	implementation files('libs/OptionMenu-debug.aar')
+	implementation files('libs/SwitchCom-debug.aar')
+//	implementation project(path: ':OptionMenu')
+//	implementation project(path: ':SwitchCom')
 }

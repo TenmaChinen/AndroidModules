@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	namespace 'com.softramen.switchcom'
+	namespace 'com.softramen.switchCom'
 	compileSdk 33
 
 	defaultConfig {

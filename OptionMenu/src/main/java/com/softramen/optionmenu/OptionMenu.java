@@ -1,4 +1,4 @@
-package com.softramen.optionmenu;
+package com.softramen.optionMenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,7 +11,6 @@ import android.widget.SpinnerAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
-import com.softramen.optionMenu.R;
 
 public class OptionMenu extends AppCompatSpinner {
 	private final String TAG = "OPTION_MENU";
@@ -65,7 +64,7 @@ public class OptionMenu extends AppCompatSpinner {
 		super.onMeasure( widthMeasureSpec , heightMeasureSpec );
 	}
 	public void setItems( final String[] stringArray ) {
-		final OptionMenuAdapter optionMenuAdapter = new OptionMenuAdapter( getContext() , stringArray , optionMenuAttrs );
+		final com.softramen.optionMenu.OptionMenuAdapter optionMenuAdapter = new com.softramen.optionMenu.OptionMenuAdapter( getContext() , stringArray , optionMenuAttrs );
 		super.setAdapter( optionMenuAdapter );
 
 		post( () -> {

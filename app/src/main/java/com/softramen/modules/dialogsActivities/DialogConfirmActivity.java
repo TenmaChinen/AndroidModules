@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import com.softramen.dialogsCustom.DialogConfirm;
+import com.softramen.dialogsCustom.utils.DialogConstants;
 import com.softramen.modules.R;
 
 public class DialogConfirmActivity extends AppCompatActivity {
@@ -40,16 +41,16 @@ public class DialogConfirmActivity extends AppCompatActivity {
 		@Override
 		public void onFragmentResult( @NonNull final String requestCode , @NonNull final Bundle result ) {
 			if ( requestCode.equals( DialogConfirm.REQUEST_CODE ) ) {
-				final int methodCode = result.getInt( DialogConfirm.METHOD_CODE );
+				final int methodCode = result.getInt( DialogConstants.METHOD_CODE );
 				Log.d( TAG , "onFragmentResult > Result : " + methodCode );
 				switch ( methodCode ) {
-					case DialogConfirm.ON_CLICK_POSITIVE:
+					case DialogConstants.ON_CLICK_POSITIVE:
 						Log.d( TAG , "onClickPositive" );
 						break;
-					case DialogConfirm.ON_CLICK_NEGATIVE:
+					case DialogConstants.ON_CLICK_NEGATIVE:
 						Log.d( TAG , "onClickNegative" );
 						break;
-					case DialogConfirm.ON_CANCEL:
+					case DialogConstants.ON_CANCEL:
 						Log.d( TAG , "onCancel" );
 				}
 			}

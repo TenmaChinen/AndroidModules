@@ -1,4 +1,4 @@
-package com.softramen.settingsmanager;
+package com.softramen.settingsManager;
 
 import android.view.View;
 import android.widget.AdapterView;

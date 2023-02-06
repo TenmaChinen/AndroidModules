@@ -17,19 +17,17 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import com.softramen.dialogsCustom.utils.AnimationListener;
-import com.softramen.dialogsCustom.utils.Constants;
+import com.softramen.dialogsCustom.utils.DialogConstants;
 
 public class DialogAnnounce extends DialogFragment {
 	private final String TAG = "ANNOUNCE_DIALOG";
 
-	public static final String REQUEST_CODE = "DIALOG_ANNOUNCE", METHOD_CODE = "METHOD_CODE";
-	public static final int ON_FINISH_ANNOUNCE = 0, ON_CANCEL = 1;
-
+	public static final String REQUEST_CODE = "DIALOG_ANNOUNCE";
 	private static final String ARG_MESSAGE = "ARG_MESSAGE";
 
 	private Animation windowEnterAnimation, windowExitAnimation;
 	private boolean onStartExecuted = false;
-	private int callbackId = ON_CANCEL;
+	private int callbackId = DialogConstants.ON_CANCEL;
 	private TextView tvAnnounce;
 	private Animation animation;
 	private View inflatedView;
@@ -56,7 +54,7 @@ public class DialogAnnounce extends DialogFragment {
 		animation.setAnimationListener( new AnimationListener() {
 			@Override
 			public void onAnimationEnd( final Animation animation ) {
-				callbackId = ON_FINISH_ANNOUNCE;
+				callbackId = DialogConstants.ON_FINISH_ANNOUNCE;
 				tvAnnounce.setVisibility( View.GONE );
 				startDismissAnimation();
 			}
@@ -98,9 +96,10 @@ public class DialogAnnounce extends DialogFragment {
 		if ( dialog != null ) {
 			final Window window = dialog.getWindow();
 			// window.setLayout( -1 , -1 );
-			window.setLayout( LayoutParams.MATCH_PARENT , Constants.Dialog.HEIGHT ); // Avoids cover AdMob Banners
+			window.setLayout( LayoutParams.MATCH_PARENT , DialogConstants.HEIGHT ); // Avoids cover AdMob Banners
 			inflatedView.startAnimation( windowEnterAnimation );
 		}
+		tvAnnounce.setVisibility( View.VISIBLE );
 		tvAnnounce.setAnimation( animation );
 	}
 
@@ -130,7 +129,7 @@ public class DialogAnnounce extends DialogFragment {
 		final FragmentActivity fragmentActivity = getActivity();
 		if ( fragmentActivity != null ) {
 			final Bundle results = new Bundle();
-			results.putInt( METHOD_CODE , callbackId );
+			results.putInt( DialogConstants.METHOD_CODE , callbackId );
 			final FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
 			fragmentManager.setFragmentResult( REQUEST_CODE , results );
 		}

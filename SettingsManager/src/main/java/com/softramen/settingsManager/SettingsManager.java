@@ -1,6 +1,5 @@
-package com.softramen.settingsmanager;
+package com.softramen.settingsManager;
 
-import com.softramen.settingsManager.R;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

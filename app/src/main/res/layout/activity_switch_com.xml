@@ -14,13 +14,13 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
 
-		<com.softramen.switchcom.SwitchCom
+		<com.softramen.switchCom.SwitchCom
 			android:id="@+id/switch_com_a"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:switchHeight="60dp" />
 
-		<com.softramen.switchcom.SwitchCom
+		<com.softramen.switchCom.SwitchCom
 			android:id="@+id/switch_com_b"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -33,24 +33,24 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal">
 
-		<com.softramen.switchcom.SwitchCom
+		<com.softramen.switchCom.SwitchCom
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:switchHeight="40dp" />
 
-		<com.softramen.switchcom.SwitchCom
+		<com.softramen.switchCom.SwitchCom
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:switchHeight="60dp" />
 
 	</androidx.appcompat.widget.LinearLayoutCompat>
 
-	<com.softramen.switchcom.SwitchCom
+	<com.softramen.switchCom.SwitchCom
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:switchHeight="10dp" />
 
-	<com.softramen.switchcom.SwitchCom
+	<com.softramen.switchCom.SwitchCom
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:switchHeight="30dp" />
@@ -62,7 +62,7 @@
 		android:gravity="top"
 		android:background="@color/dark_gray">
 
-		<com.softramen.switchcom.SwitchCom
+		<com.softramen.switchCom.SwitchCom
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:switchHeight="30dp"
@@ -81,7 +81,7 @@
 		    android:background="#454545"
 		    android:gravity="center" />
 
-		<com.softramen.switchcom.SwitchCom
+		<com.softramen.switchCom.SwitchCom
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:padding="0dp"

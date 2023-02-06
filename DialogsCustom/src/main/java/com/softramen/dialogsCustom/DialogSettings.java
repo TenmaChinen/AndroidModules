@@ -18,10 +18,10 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import com.softramen.dialogsCustom.utils.AnimationListener;
-import com.softramen.dialogsCustom.utils.Constants;
-import com.softramen.settingsmanager.SettingsItem;
-import com.softramen.settingsmanager.SettingsListAdapter;
-import com.softramen.settingsmanager.SettingsManager;
+import com.softramen.dialogsCustom.utils.DialogConstants;
+import com.softramen.settingsManager.SettingsItem;
+import com.softramen.settingsManager.SettingsListAdapter;
+import com.softramen.settingsManager.SettingsManager;
 import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
@@ -29,13 +29,12 @@ import java.util.Map;
 public class DialogSettings extends DialogFragment {
 	private final String TAG = "DIALOG_SETTINGS";
 
-	public static final String REQUEST_CODE = "DIALOG_SETTINGS", METHOD_CODE = "METHOD_CODE";
-	public static final int ON_CLICK_SAVE = 0, ON_CANCEL = 1;
+	public static final String REQUEST_CODE = "DIALOG_SETTINGS";
 
 	private final SettingsManager settingsManager = SettingsManager.getInstance();
 	private Animation windowEnterAnimation, windowExitAnimation;
 	private boolean onStartExecuted = false;
-	private int callbackId = ON_CANCEL;
+	private int callbackId = DialogConstants.ON_CANCEL;
 	private View inflatedView;
 
 	@Override
@@ -78,9 +77,9 @@ public class DialogSettings extends DialogFragment {
 			final int viewId = view.getId();
 			if ( viewId == R.id.btn_save ) {
 				settingsListAdapter.updateSettingsChanges();
-				callbackId = ON_CLICK_SAVE;
+				callbackId = DialogConstants.ON_CLICK_SAVE;
 			}
-			else if ( viewId == R.id.btn_cancel ) callbackId = ON_CANCEL;
+			else if ( viewId == R.id.btn_cancel ) callbackId = DialogConstants.ON_CANCEL;
 			startDismissAnimation();
 		};
 
@@ -98,7 +97,7 @@ public class DialogSettings extends DialogFragment {
 		final Dialog dialog = getDialog();
 		if ( dialog != null ) {
 			final Window window = dialog.getWindow();
-			window.setLayout( LayoutParams.MATCH_PARENT , Constants.Dialog.HEIGHT ); // Avoids cover AdMob Banners
+			window.setLayout( LayoutParams.MATCH_PARENT , DialogConstants.HEIGHT ); // Avoids cover AdMob Banners
 			inflatedView.startAnimation( windowEnterAnimation );
 		}
 	}
@@ -125,7 +124,7 @@ public class DialogSettings extends DialogFragment {
 		final FragmentActivity fragmentActivity = getActivity();
 		if ( fragmentActivity != null ) {
 			final Bundle results = new Bundle();
-			results.putInt( METHOD_CODE , callbackId );
+			results.putInt( DialogConstants.METHOD_CODE , callbackId );
 			final FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
 			fragmentManager.setFragmentResult( REQUEST_CODE , results );
 		}

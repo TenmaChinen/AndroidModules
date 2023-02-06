@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.softramen.dialogsCustom.DialogRetry;
+import com.softramen.dialogsCustom.utils.DialogConstants;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityRetryDialogBinding;
 
@@ -44,12 +45,12 @@ public class DialogRetryActivity extends AppCompatActivity {
         @Override
         public void onFragmentResult( @NonNull final String requestCode , @NonNull final Bundle result ) {
             if ( requestCode.equals( DialogRetry.REQUEST_CODE ) ) {
-                final int methodCode = result.getInt( DialogRetry.METHOD_CODE );
+                final int methodCode = result.getInt( DialogConstants.METHOD_CODE );
                 switch ( methodCode ) {
-                    case DialogRetry.ON_CLICK_RETRY:
+                    case DialogConstants.ON_CLICK_RETRY:
                         Log.d( TAG , "ON_CLICK_RETRY" );
                         break;
-                    case DialogRetry.ON_CANCEL:
+                    case DialogConstants.ON_CANCEL:
                         Log.d( TAG , "ON_CANCEL" );
                 }
             }

@@ -1,4 +1,4 @@
-package com.softramen.settingsmanager;
+package com.softramen.settingsManager;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import com.softramen.optionmenu.OptionMenu;
-import com.softramen.settingsManager.R;
-import com.softramen.settingsmanager.SettingsItem.Type;
+import com.softramen.settingsManager.SettingsItem.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;

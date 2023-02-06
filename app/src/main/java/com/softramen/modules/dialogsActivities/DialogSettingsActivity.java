@@ -12,11 +12,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.LifecycleOwner;
 import com.softramen.dialogsCustom.DialogSettings;
+import com.softramen.dialogsCustom.utils.DialogConstants;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityDialogSettingsBinding;
-import com.softramen.settingsmanager.SettingsItem;
-import com.softramen.settingsmanager.SettingsItem.Type;
-import com.softramen.settingsmanager.SettingsManager;
+import com.softramen.settingsManager.SettingsItem;
+import com.softramen.settingsManager.SettingsItem.Type;
+import com.softramen.settingsManager.SettingsManager;
 
 public class DialogSettingsActivity extends AppCompatActivity {
 
@@ -59,9 +60,9 @@ public class DialogSettingsActivity extends AppCompatActivity {
 		@Override
 		public void onFragmentResult( @NonNull final String requestCode , @NonNull final Bundle result ) {
 			if ( requestCode.equals( DialogSettings.REQUEST_CODE ) ) {
-				final int methodCode = result.getInt( DialogSettings.METHOD_CODE );
+				final int methodCode = result.getInt( DialogConstants.METHOD_CODE );
 				switch ( methodCode ) {
-					case DialogSettings.ON_CLICK_SAVE:
+					case DialogConstants.ON_CLICK_SAVE:
 						Log.d( TAG , "onClickSave" );
 						// TODO : Update things here if needed
 						// Toast.makeText( context , "Changes Saved" , Toast.LENGTH_SHORT ).show();
@@ -76,7 +77,7 @@ public class DialogSettingsActivity extends AppCompatActivity {
 							}
 						}
 						break;
-					case DialogSettings.ON_CANCEL:
+					case DialogConstants.ON_CANCEL:
 						Log.d( TAG , "onCancel" );
 						Toast.makeText( context , "Changes not saved" , Toast.LENGTH_SHORT ).show();
 				}

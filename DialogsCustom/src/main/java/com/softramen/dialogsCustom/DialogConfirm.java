@@ -17,21 +17,20 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import com.softramen.dialogsCustom.utils.AnimationListener;
-import com.softramen.dialogsCustom.utils.Constants;
+import com.softramen.dialogsCustom.utils.DialogConstants;
 import org.jetbrains.annotations.Nullable;
 
 
 public class DialogConfirm extends DialogFragment {
 	private final String TAG = "DIALOG_CONFIRM";
 
-	public static final String REQUEST_CODE = "DIALOG_CONFIRM", METHOD_CODE = "METHOD_CODE";
-	public static final int ON_CLICK_POSITIVE = 0, ON_CLICK_NEGATIVE = 1, ON_CANCEL = 2;
+	public static final String REQUEST_CODE = "DIALOG_CONFIRM";
 
 	private static final String ARG_MESSAGE = "ARG_MESSAGE";
 
 	private Animation windowEnterAnimation, windowExitAnimation;
 	private boolean onStartExecuted = false;
-	private int callbackId = ON_CANCEL;
+	private int callbackId = DialogConstants.ON_CANCEL;
 	private View inflatedView;
 	private String message;
 
@@ -91,8 +90,8 @@ public class DialogConfirm extends DialogFragment {
 			btnPositive.setOnClickListener( null );
 			btnNegative.setOnClickListener( null );
 			final int viewId = view.getId();
-			if ( viewId == R.id.btn_positive ) callbackId = ON_CLICK_POSITIVE;
-			else if ( viewId == R.id.btn_negative ) callbackId = ON_CLICK_NEGATIVE;
+			if ( viewId == R.id.btn_positive ) callbackId = DialogConstants.ON_CLICK_POSITIVE;
+			else if ( viewId == R.id.btn_negative ) callbackId = DialogConstants.ON_CLICK_NEGATIVE;
 			startDismissAnimation();
 		};
 
@@ -110,7 +109,7 @@ public class DialogConfirm extends DialogFragment {
 		final Dialog dialog = getDialog();
 		if ( dialog != null ) {
 			final Window window = dialog.getWindow();
-			window.setLayout( LayoutParams.MATCH_PARENT , Constants.Dialog.HEIGHT ); // Avoids cover AdMob Banners
+			window.setLayout( LayoutParams.MATCH_PARENT , DialogConstants.HEIGHT ); // Avoids cover AdMob Banners
 			inflatedView.startAnimation( windowEnterAnimation );
 		}
 	}
@@ -138,7 +137,7 @@ public class DialogConfirm extends DialogFragment {
 		final FragmentActivity fragmentActivity = getActivity();
 		if ( fragmentActivity != null ) {
 			final Bundle results = new Bundle();
-			results.putInt( METHOD_CODE , callbackId );
+			results.putInt( DialogConstants.METHOD_CODE , callbackId );
 			final FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
 			fragmentManager.setFragmentResult( REQUEST_CODE , results );
 		}

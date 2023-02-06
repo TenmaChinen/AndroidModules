@@ -1,4 +1,4 @@
-package com.softramen.switchcom;
+package com.softramen.switchCom;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
-import com.softramen.switchCom.R;
+
 
 public class SwitchCom extends SwitchCompat {
 	private final String TAG = "SWITCH_COM";

@@ -5,8 +5,8 @@ import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import androidx.appcompat.app.AppCompatActivity;
-import com.softramen.switchcom.SwitchCom;
 import com.softramen.modules.R;
+import com.softramen.switchCom.SwitchCom;
 
 public class SwitchComActivity extends AppCompatActivity {
 	private final String TAG = "SWITCH_COM_ACTIVITY";

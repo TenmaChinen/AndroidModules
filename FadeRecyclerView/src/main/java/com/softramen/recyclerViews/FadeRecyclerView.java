@@ -1,4 +1,4 @@
-package com.softramen.recyclerviews;
+package com.softramen.recyclerViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -1,4 +1,4 @@
-package com.softramen.optionmenu;
+package com.softramen.optionMenu;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,16 +9,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.softramen.optionMenu.R;
 
 public class OptionMenuAdapter extends BaseAdapter {
 	private final String TAG = "OPTION_MENU_ADAPTER";
 	private final String[] stringArray;
 	private final LayoutInflater layoutInflater;
-	private final OptionMenu.OptionMenuAttrs attrs;
+	private final com.softramen.optionMenu.OptionMenu.OptionMenuAttrs attrs;
 	private int selectedPosition = -1;
 
-	public OptionMenuAdapter( final Context context , final String[] stringArray , final OptionMenu.OptionMenuAttrs attrs ) {
+	public OptionMenuAdapter( final Context context , final String[] stringArray , final com.softramen.optionMenu.OptionMenu.OptionMenuAttrs attrs ) {
 		layoutInflater = LayoutInflater.from( context );
 		this.stringArray = stringArray;
 		this.attrs = attrs;

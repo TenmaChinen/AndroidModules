@@ -2,7 +2,7 @@ package com.softramen.modules.splashActivity;
 
 import android.os.Bundle;
 import com.softramen.modules.fadeRecyclerView.FadeRecyclerViewActivity;
-import com.softramen.splashactivity.SplashActivity;
+import com.softramen.splashActivity.SplashActivity;
 
 public class LaunchActivity extends SplashActivity {
 

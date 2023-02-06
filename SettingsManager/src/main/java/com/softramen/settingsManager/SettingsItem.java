@@ -1,4 +1,4 @@
-package com.softramen.settingsmanager;
+package com.softramen.settingsManager;
 
 public class SettingsItem {
 	private final int itemType;

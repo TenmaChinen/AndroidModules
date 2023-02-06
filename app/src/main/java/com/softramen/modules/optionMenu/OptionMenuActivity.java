@@ -2,8 +2,8 @@ package com.softramen.modules.optionMenu;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import com.softramen.optionmenu.OptionMenu;
 import com.softramen.modules.R;
+import com.softramen.optionMenu.OptionMenu;
 
 public class OptionMenuActivity extends AppCompatActivity {
 	@Override

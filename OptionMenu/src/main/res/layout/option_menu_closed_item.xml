@@ -20,9 +20,9 @@
 		android:id="@+id/iv_option_menu_arrow"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		app:srcCompat="@drawable/option_menu_triangle_down"
-		android:adjustViewBounds="true"
 		android:scaleType="fitCenter"
+		android:adjustViewBounds="true"
+		app:srcCompat="@drawable/option_menu_triangle_down"
 		android:contentDescription="@string/option_menu_dropdown_down_arrow" />
 
 </LinearLayout>

@@ -3,8 +3,10 @@ package com.softramen.optionMenu;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.SpinnerAdapter;
@@ -55,16 +57,12 @@ public class OptionMenu extends AppCompatSpinner {
 			typedArray.recycle();
 		}
 		catch ( final Exception error ) {
-			Log.d( TAG , "Error : " + error );
+			Log.e( TAG , "setAttributes > Error : " + error );
 		}
 	}
 
-	@Override
-	protected void onMeasure( final int widthMeasureSpec , final int heightMeasureSpec ) {
-		super.onMeasure( widthMeasureSpec , heightMeasureSpec );
-	}
 	public void setItems( final String[] stringArray ) {
-		final com.softramen.optionMenu.OptionMenuAdapter optionMenuAdapter = new com.softramen.optionMenu.OptionMenuAdapter( getContext() , stringArray , optionMenuAttrs );
+		final OptionMenuAdapter optionMenuAdapter = new OptionMenuAdapter( getContext() , stringArray , optionMenuAttrs );
 		super.setAdapter( optionMenuAdapter );
 
 		post( () -> {
@@ -74,10 +72,19 @@ public class OptionMenu extends AppCompatSpinner {
 	}
 
 
-	static class OptionMenuAttrs {
-		protected final int textColor, textSize, textBackgroundColor, dropdownBackgroundColor, selectedBackgroundColor;
+	public void setTextSize( final float size ) {
+		optionMenuAttrs.textSize = ( int ) TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_SP , size , getResources().getDisplayMetrics() );
+	}
+
+	public void setTextStyle( final int textStyle ){
+		optionMenuAttrs.textStyle = textStyle;
+		}
+
+	public static class OptionMenuAttrs {
+		protected final int textColor, textBackgroundColor, dropdownBackgroundColor, selectedBackgroundColor;
 		protected final int textGravity, dropDownTextGravity;
-		protected final int textPadding, dropDownTextPadding;
+		protected final int dropDownTextPadding;
+		protected int textStyle, textSize;
 
 		public OptionMenuAttrs( final TypedArray typedArray ) {
 			textColor = typedArray.getColor( R.styleable.OptionMenu_textColor , Color.WHITE );
@@ -85,9 +92,9 @@ public class OptionMenu extends AppCompatSpinner {
 			textBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_backgroundColor , Color.TRANSPARENT );
 			dropdownBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_dropDownBackgroundColor , 0xFF151515 );
 			selectedBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_selectedBackgroundColor , 0xFF202020 );
+			textStyle = typedArray.getInt( R.styleable.OptionMenu_textStyle , Typeface.NORMAL );
 			textGravity = typedArray.getInt( R.styleable.OptionMenu_textGravity , Gravity.CENTER );
 			dropDownTextGravity = typedArray.getInt( R.styleable.OptionMenu_dropDownTextGravity , Gravity.CENTER );
-			textPadding = typedArray.getInt( R.styleable.OptionMenu_textPadding , 0 );
 			dropDownTextPadding = typedArray.getInt( R.styleable.OptionMenu_dropDownTextPadding , 10 );
 		}
 	}

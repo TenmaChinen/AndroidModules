@@ -1,9 +1,11 @@
 package com.softramen.modules.optionMenu;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.softramen.modules.R;
 import com.softramen.optionMenu.OptionMenu;
+
 
 public class OptionMenuActivity extends AppCompatActivity {
 	@Override
@@ -11,8 +13,12 @@ public class OptionMenuActivity extends AppCompatActivity {
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.activity_option_menu );
 
-		final String[] stringArray = { "Option A" , "Option B" , "Option C" };
-		final OptionMenu optionMenu = findViewById( R.id.option_menu );
-		optionMenu.setItems( stringArray );
+		final OptionMenu optionMenuA = findViewById( R.id.option_menu_a );
+		optionMenuA.setItems( new String[]{ "Option A" , "Option B" , "Option C" } );
+		optionMenuA.setTextStyle( Typeface.BOLD_ITALIC );
+
+		final OptionMenu optionMenuB = findViewById( R.id.option_menu_b );
+		optionMenuB.setTextSize( 30 );
+		optionMenuB.setItems( new String[]{ "Option A" , "Option B" , "Option C" } );
 	}
 }

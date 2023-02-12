@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<declare-styleable name="OptionMenu">
-		<attr name="textColor"
-			format="color" />
-		<attr name="textSize"
-			format="dimension" />
-		<attr name="backgroundColor"
-			format="color" />
-		<attr name="dropDownBackgroundColor"
-			format="color" />
-		<attr name="textPadding"
-			format="dimension" />
-		<attr name="dropDownTextPadding"
-			format="dimension" />
-		<attr name="selectedBackgroundColor"
-			format="color" />
-		<attr name="spacerColor"
-			format="color" />
+		<attr name="textColor" format="color" />
+		<attr name="textSize" format="dimension" />
+		<attr name="backgroundColor" format="color" />
+		<attr name="dropDownBackgroundColor" format="color" />
+		<attr name="dropDownTextPadding" format="dimension" />
+		<attr name="selectedBackgroundColor" format="color" />
+		<attr name="spacerColor" format="color" />
 
-		<attr name="textGravity"
-			format="enum">
+		<attr name="textStyle">
+			<flag name="normal" value="0" />
+			<flag name="bold" value="1" />
+			<flag name="italic" value="2" />
+		</attr>
+
+		<attr name="textGravity" format="enum">
 			<enum name="left"
 				value="0x00800003" />
 			<enum name="center"

@@ -24,6 +24,17 @@ public class SettingsItem {
 		this.optionPosition = optionPosition;
 	}
 
+	/*   B U T T O N   */
+
+	private boolean clicked = false;
+
+	public SettingsItem( final String label ) {
+		itemType = Type.BUTTON;
+		this.label = label;
+	}
+
+	/*   G E T T E R S   */
+
 	public int getItemType() {
 		return itemType;
 	}
@@ -48,6 +59,8 @@ public class SettingsItem {
 		return options[ optionPosition ];
 	}
 
+	/*   S E T T E R S   */
+
 	public void setState( final boolean state ) {
 		this.state = state;
 	}
@@ -55,8 +68,13 @@ public class SettingsItem {
 		this.optionPosition = optionPosition;
 	}
 
+	public void setClicked() {
+		clicked = true;
+	}
+
 	public static class Type {
 		public final static int SWITCH = 0;
 		public final static int SPINNER = 1;
+		public final static int BUTTON = 2;
 	}
 }

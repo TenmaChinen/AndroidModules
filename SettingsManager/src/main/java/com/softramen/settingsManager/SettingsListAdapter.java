@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
-import com.softramen.optionmenu.OptionMenu;
+import com.softramen.optionMenu.OptionMenu;
 import com.softramen.settingsManager.SettingsItem.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,11 +81,6 @@ public class SettingsListAdapter extends BaseAdapter {
 	@NonNull
 	@Override
 	public View getView( final int itemPosition , @Nullable View convertView , @NonNull final ViewGroup parent ) {
-
-		/* TODO !!! EASY AS PIE => Just put a HashMap to identify which IDs
-		    changed to which value by adding Spinner and Switch listeners inside the
-		    listViewAdapter !!!
-		 */
 
 		if ( convertView == null ) {
 			final SettingsItem listItem = getItem( itemPosition );

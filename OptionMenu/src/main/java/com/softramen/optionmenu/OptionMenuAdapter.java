@@ -1,6 +1,7 @@
 package com.softramen.optionMenu;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,10 +15,10 @@ public class OptionMenuAdapter extends BaseAdapter {
 	private final String TAG = "OPTION_MENU_ADAPTER";
 	private final String[] stringArray;
 	private final LayoutInflater layoutInflater;
-	private final com.softramen.optionMenu.OptionMenu.OptionMenuAttrs attrs;
+	private final OptionMenu.OptionMenuAttrs attrs;
 	private int selectedPosition = -1;
 
-	public OptionMenuAdapter( final Context context , final String[] stringArray , final com.softramen.optionMenu.OptionMenu.OptionMenuAttrs attrs ) {
+	public OptionMenuAdapter( final Context context , final String[] stringArray , final OptionMenu.OptionMenuAttrs attrs ) {
 		layoutInflater = LayoutInflater.from( context );
 		this.stringArray = stringArray;
 		this.attrs = attrs;
@@ -40,31 +41,28 @@ public class OptionMenuAdapter extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		// Only One Type Of View is Returned for OptionMenu
 		return 1;
 	}
 
 	@Override
 	public int getItemViewType( final int position ) {
-		// Only one Type of View which Type ID = 0
 		return 0;
 	}
 
 	@Override
 	public View getView( final int position , View convertView , final ViewGroup parent ) {
-		Log.d( TAG , "getView > position : " + position );
 		if ( convertView == null ) {
 			convertView = layoutInflater.inflate( R.layout.option_menu_closed_item , parent , false );
 			convertView.setBackgroundColor( attrs.textBackgroundColor );
+
 			final TextView tvOptionMenuLabel = convertView.findViewById( R.id.tv_option_menu_label );
 			final ImageView ivOptionMenuArrow = convertView.findViewById( R.id.iv_option_menu_arrow );
 			tvOptionMenuLabel.setText( stringArray[ position ] );
 			tvOptionMenuLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX , attrs.textSize );
 			tvOptionMenuLabel.setTextColor( attrs.textColor );
+			tvOptionMenuLabel.setTypeface( tvOptionMenuLabel.getTypeface(), attrs.textStyle );
 			tvOptionMenuLabel.setGravity( attrs.textGravity );
-			// tvOptionMenuLabel.setPadding( attrs.textPadding , attrs.textPadding , attrs.textPadding , attrs.textPadding );
-
-			ivOptionMenuArrow.setMaxHeight( attrs.textSize / 2 );
+			ivOptionMenuArrow.setMaxHeight( attrs.textSize / 3 );
 			ivOptionMenuArrow.setColorFilter( attrs.textColor );
 		}
 
@@ -84,6 +82,7 @@ public class OptionMenuAdapter extends BaseAdapter {
 			tvOptionMenuLabel.setText( stringArray[ position ] );
 			tvOptionMenuLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX , attrs.textSize );
 			tvOptionMenuLabel.setTextColor( attrs.textColor );
+			tvOptionMenuLabel.setTypeface( tvOptionMenuLabel.getTypeface(), attrs.textStyle );
 			tvOptionMenuLabel.setGravity( attrs.textGravity );
 			final int pad = attrs.dropDownTextPadding;
 			tvOptionMenuLabel.setPadding( pad , pad , pad , pad );

@@ -9,6 +9,6 @@ public class LaunchActivity extends SplashActivity {
 	@Override
 	protected void onCreate( final Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
-		setActivityToLaunch( FadeRecyclerViewActivity.class );
+		setActivityToLaunch( SecondActivity.class );
 	}
 }

@@ -72,8 +72,8 @@ public class OptionMenu extends AppCompatSpinner {
 	}
 
 
-	public void setTextSize( final float size ) {
-		optionMenuAttrs.textSize = ( int ) TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_SP , size , getResources().getDisplayMetrics() );
+	public void setTextSize( final int unit, final float size ) {
+		optionMenuAttrs.textSize = ( int ) TypedValue.applyDimension( unit , size , getResources().getDisplayMetrics() );
 	}
 
 	public void setTextStyle( final int textStyle ){

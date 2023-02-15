@@ -18,6 +18,7 @@ public class OptionMenu extends AppCompatSpinner {
 	private final String TAG = "OPTION_MENU";
 
 	public OptionMenuAttrs optionMenuAttrs;
+	private OptionMenuAdapter optionMenuAdapter;
 
 	public OptionMenu( @NonNull final Context context ) {
 		super( context , null );
@@ -50,8 +51,25 @@ public class OptionMenu extends AppCompatSpinner {
 		optionMenuAttrs.setPadding( left , top , right , bottom );
 	}
 
-	public void setDropdownPadding(final int padding){
-		optionMenuAttrs.setDropdownPadding(padding);
+	@Override
+	public void setSelection( final int position , final boolean animate ) {
+		super.setSelection( position , animate );
+		if ( optionMenuAdapter != null ) {
+			optionMenuAdapter.setSelectedPosition( position );
+		}
+	}
+
+	@Override
+	public void setSelection( final int position ) {
+		super.setSelection( position );
+		// This method is called automatically without listener when item is selected
+		if ( optionMenuAdapter != null ) {
+			optionMenuAdapter.setSelectedPosition( position );
+		}
+	}
+
+	public void setDropdownPadding( final int padding ) {
+		optionMenuAttrs.setDropdownPadding( padding );
 	}
 
 	private void setDefaults() {
@@ -72,7 +90,7 @@ public class OptionMenu extends AppCompatSpinner {
 	}
 
 	public void setItems( final String[] stringArray ) {
-		final OptionMenuAdapter optionMenuAdapter = new OptionMenuAdapter( getContext() , stringArray , optionMenuAttrs );
+		optionMenuAdapter = new OptionMenuAdapter( getContext() , stringArray , optionMenuAttrs );
 		super.setAdapter( optionMenuAdapter );
 
 		post( () -> {
@@ -101,12 +119,12 @@ public class OptionMenu extends AppCompatSpinner {
 			textColor = typedArray.getColor( R.styleable.OptionMenu_textColor , Color.WHITE );
 			textSize = typedArray.getDimensionPixelSize( R.styleable.OptionMenu_textSize , 14 );
 			textBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_backgroundColor , Color.TRANSPARENT );
-			dropdownBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_dropDownBackgroundColor , 0xFF151515 );
-			selectedBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_selectedBackgroundColor , 0xFF202020 );
+			dropdownBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_dropDownBackgroundColor , 0xFF474247 );
+			selectedBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_selectedBackgroundColor , 0xFF2E292E );
 			textStyle = typedArray.getInt( R.styleable.OptionMenu_textStyle , Typeface.NORMAL );
 			textGravity = typedArray.getInt( R.styleable.OptionMenu_textGravity , Gravity.CENTER );
 			dropDownTextGravity = typedArray.getInt( R.styleable.OptionMenu_dropDownTextGravity , Gravity.CENTER );
-			dropdownPadding = typedArray.getDimensionPixelSize( R.styleable.OptionMenu_dropDownTextPadding , 10 );
+			dropdownPadding = typedArray.getDimensionPixelSize( R.styleable.OptionMenu_dropDownPadding , 10 );
 
 			padLeft = appCompatSpinner.getPaddingLeft();
 			padTop = appCompatSpinner.getPaddingTop();

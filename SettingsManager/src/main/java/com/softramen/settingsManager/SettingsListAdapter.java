@@ -112,7 +112,8 @@ public class SettingsListAdapter extends BaseAdapter {
 					tvLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX, textSizePixels );
 					tvLabel.setText( listItem.getLabel() );
 					final OptionMenu optionMenu = convertView.findViewById( R.id.spinner_settings_list_item );
-					optionMenu.setPadding( 50,50,50,50 );
+					final int optionMenuPad = 10;
+					optionMenu.setPadding( optionMenuPad,optionMenuPad,optionMenuPad,optionMenuPad);
 					optionMenu.setItems( listItem.getOptions() );
 					optionMenu.setTextSize( TypedValue.COMPLEX_UNIT_PX, textSizePixels );
 					optionMenu.setSelection( listItem.getOptionPosition() );

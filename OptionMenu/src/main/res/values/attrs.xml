@@ -5,7 +5,7 @@
 		<attr name="textSize" format="dimension" />
 		<attr name="backgroundColor" format="color" />
 		<attr name="dropDownBackgroundColor" format="color" />
-		<attr name="dropDownTextPadding" format="dimension" />
+		<attr name="dropDownPadding" format="dimension" />
 		<attr name="selectedBackgroundColor" format="color" />
 		<attr name="spacerColor" format="color" />
 

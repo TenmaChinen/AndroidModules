@@ -44,6 +44,16 @@ public class OptionMenu extends AppCompatSpinner {
 		// super.setBackgroundColor( color );
 	}
 
+	@Override
+	public void setPadding( final int left , final int top , final int right , final int bottom ) {
+		super.setPadding( left , top , right , bottom );
+		optionMenuAttrs.setPadding( left , top , right , bottom );
+	}
+
+	public void setDropdownPadding(final int padding){
+		optionMenuAttrs.setDropdownPadding(padding);
+	}
+
 	private void setDefaults() {
 		super.setBackgroundColor( Color.TRANSPARENT );
 	}
@@ -53,7 +63,7 @@ public class OptionMenu extends AppCompatSpinner {
 		try {
 			final TypedArray typedArray;
 			typedArray = getContext().obtainStyledAttributes( attributeSet , R.styleable.OptionMenu );
-			optionMenuAttrs = new OptionMenuAttrs( typedArray );
+			optionMenuAttrs = new OptionMenuAttrs( typedArray , this );
 			typedArray.recycle();
 		}
 		catch ( final Exception error ) {
@@ -67,26 +77,27 @@ public class OptionMenu extends AppCompatSpinner {
 
 		post( () -> {
 			final View view = getChildAt( 0 );
-			setDropDownVerticalOffset( view.getMeasuredHeight() );
+			setDropDownVerticalOffset( view.getMeasuredHeight() + view.getPaddingBottom() );
 		} );
 	}
 
 
-	public void setTextSize( final int unit, final float size ) {
+	public void setTextSize( final int unit , final float size ) {
 		optionMenuAttrs.textSize = ( int ) TypedValue.applyDimension( unit , size , getResources().getDisplayMetrics() );
 	}
 
-	public void setTextStyle( final int textStyle ){
+	public void setTextStyle( final int textStyle ) {
 		optionMenuAttrs.textStyle = textStyle;
-		}
+	}
 
 	public static class OptionMenuAttrs {
 		protected final int textColor, textBackgroundColor, dropdownBackgroundColor, selectedBackgroundColor;
 		protected final int textGravity, dropDownTextGravity;
-		protected final int dropDownTextPadding;
+
+		protected int padLeft, padTop, padRight, padBottom, dropdownPadding;
 		protected int textStyle, textSize;
 
-		public OptionMenuAttrs( final TypedArray typedArray ) {
+		public OptionMenuAttrs( final TypedArray typedArray , final AppCompatSpinner appCompatSpinner ) {
 			textColor = typedArray.getColor( R.styleable.OptionMenu_textColor , Color.WHITE );
 			textSize = typedArray.getDimensionPixelSize( R.styleable.OptionMenu_textSize , 14 );
 			textBackgroundColor = typedArray.getColor( R.styleable.OptionMenu_backgroundColor , Color.TRANSPARENT );
@@ -95,7 +106,23 @@ public class OptionMenu extends AppCompatSpinner {
 			textStyle = typedArray.getInt( R.styleable.OptionMenu_textStyle , Typeface.NORMAL );
 			textGravity = typedArray.getInt( R.styleable.OptionMenu_textGravity , Gravity.CENTER );
 			dropDownTextGravity = typedArray.getInt( R.styleable.OptionMenu_dropDownTextGravity , Gravity.CENTER );
-			dropDownTextPadding = typedArray.getInt( R.styleable.OptionMenu_dropDownTextPadding , 10 );
+			dropdownPadding = typedArray.getDimensionPixelSize( R.styleable.OptionMenu_dropDownTextPadding , 10 );
+
+			padLeft = appCompatSpinner.getPaddingLeft();
+			padTop = appCompatSpinner.getPaddingTop();
+			padRight = appCompatSpinner.getPaddingRight();
+			padBottom = appCompatSpinner.getPaddingBottom();
+		}
+
+		public void setPadding( final int left , final int top , final int right , final int bottom ) {
+			padLeft = left;
+			padTop = top;
+			padRight = right;
+			padBottom = bottom;
+		}
+
+		public void setDropdownPadding( final int dropdownPadding ) {
+			this.dropdownPadding = dropdownPadding;
 		}
 	}
 }

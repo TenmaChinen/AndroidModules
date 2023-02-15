@@ -19,7 +19,12 @@ public class OptionMenuActivity extends AppCompatActivity {
 		optionMenuA.setTextStyle( Typeface.BOLD_ITALIC );
 
 		final OptionMenu optionMenuB = findViewById( R.id.option_menu_b );
+		final int pad = 50;
+		final int padDropdown = 25;
+		optionMenuB.setPadding( pad,pad,pad,pad );
+		optionMenuB.setDropdownPadding( padDropdown );
 		optionMenuB.setTextSize( TypedValue.COMPLEX_UNIT_SP, 30 );
 		optionMenuB.setItems( new String[]{ "Option A" , "Option B" , "Option C" } );
+
 	}
 }

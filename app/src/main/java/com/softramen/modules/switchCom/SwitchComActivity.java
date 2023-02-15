@@ -18,6 +18,7 @@ public class SwitchComActivity extends AppCompatActivity {
 
 		final SwitchCom switchComA = findViewById( R.id.switch_com_a );
 		final SwitchCom switchComB = findViewById( R.id.switch_com_b );
+		switchComB.setPadding( 80,80,200,80 );
 
 		switchComA.setTag( "Switch A" );
 		switchComB.setTag( "Switch B" );

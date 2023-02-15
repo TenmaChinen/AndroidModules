@@ -17,7 +17,7 @@
 		android:textColor="@android:color/white"
 		tools:text="Item" />
 
-	<com.softramen.optionmenu.OptionMenu
+	<com.softramen.optionMenu.OptionMenu
 		android:id="@+id/spinner_settings_list_item"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

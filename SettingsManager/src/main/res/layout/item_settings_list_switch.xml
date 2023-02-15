@@ -17,7 +17,7 @@
 		android:textSize="16sp"
 		tools:text="Item" />
 
-	<com.softramen.switchcom.SwitchCom
+	<com.softramen.switchCom.SwitchCom
 		android:id="@+id/switch_settings_list_item"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

@@ -24,6 +24,7 @@
 			android:id="@+id/switch_com_b"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:background="@color/purple_200"
 			app:switchHeight="10dp" />
 
 	</androidx.appcompat.widget.LinearLayoutCompat>
@@ -66,7 +67,8 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:switchHeight="30dp"
-			android:paddingVertical="20dp"
+			android:paddingVertical="25dp"
+			android:paddingHorizontal="25dp"
 			android:background="@color/teal_200"
 			android:layout_gravity="top"
 			/>

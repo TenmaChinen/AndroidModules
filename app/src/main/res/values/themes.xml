@@ -8,7 +8,6 @@
         <!-- Customize your theme here. -->
         <item name="android:windowFullscreen">true</item>
         <item name="fontFamily">@font/connection</item>
-        <item name="fontFamily">@font/connection</item>
 
     </style>
 

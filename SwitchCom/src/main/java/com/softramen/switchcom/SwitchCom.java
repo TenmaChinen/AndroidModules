@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -11,6 +12,8 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.TouchDelegate;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
@@ -20,6 +23,7 @@ public class SwitchCom extends SwitchCompat {
 	private final String TAG = "SWITCH_COM";
 	private int thumbColorActive, thumbColorInactive;
 	private int trackColorActive, trackColorInactive;
+	private ShapeDrawable thumbShapeDrawable;
 	private int switchHeight;
 
 
@@ -51,7 +55,7 @@ public class SwitchCom extends SwitchCompat {
 
 		final StateListDrawable thumbStateListDrawable = new StateListDrawable();
 
-		final ShapeDrawable thumbShapeDrawable = new ShapeDrawable( new OvalShape() );
+		thumbShapeDrawable = new ShapeDrawable( new OvalShape() );
 		final int thumbSize = switchHeight;
 		thumbShapeDrawable.setIntrinsicWidth( thumbSize );
 		thumbShapeDrawable.setIntrinsicHeight( thumbSize );
@@ -76,15 +80,20 @@ public class SwitchCom extends SwitchCompat {
 
 		final ColorStateList thumbTintList = new ColorStateList( states , thumbColors );
 		thumbStateListDrawable.setTintList( thumbTintList );
-		// super.getThumbDrawable().setTintList( thumbTintList );
 		super.setThumbDrawable( thumbStateListDrawable );
 
 		final int[] trackColors = new int[]{ trackColorActive , trackColorInactive };
 		final ColorStateList trackTintList = new ColorStateList( states , trackColors );
-		// super.getTrackDrawable().setTintList( trackTintList );
 		trackStateListDrawable.setTintList( trackTintList );
 		super.setTrackDrawable( trackStateListDrawable );
 	}
+
+	public void setSwitchHeight( final int switchHeight ) {
+		this.switchHeight = switchHeight;
+		thumbShapeDrawable.setIntrinsicWidth( switchHeight );
+		thumbShapeDrawable.setIntrinsicHeight( switchHeight );
+	}
+
 
 	@Override
 	public void onMeasure( final int widthMeasureSpec , final int heightMeasureSpec ) {

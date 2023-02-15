@@ -1,8 +1,6 @@
 package com.softramen.optionMenu;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +52,7 @@ public class OptionMenuAdapter extends BaseAdapter {
 		if ( convertView == null ) {
 			convertView = layoutInflater.inflate( R.layout.option_menu_closed_item , parent , false );
 			convertView.setBackgroundColor( attrs.textBackgroundColor );
+			convertView.setPadding( attrs.padLeft, attrs.padTop, attrs.padRight, attrs.padBottom );
 
 			final TextView tvOptionMenuLabel = convertView.findViewById( R.id.tv_option_menu_label );
 			final ImageView ivOptionMenuArrow = convertView.findViewById( R.id.iv_option_menu_arrow );
@@ -84,7 +83,7 @@ public class OptionMenuAdapter extends BaseAdapter {
 			tvOptionMenuLabel.setTextColor( attrs.textColor );
 			tvOptionMenuLabel.setTypeface( tvOptionMenuLabel.getTypeface(), attrs.textStyle );
 			tvOptionMenuLabel.setGravity( attrs.textGravity );
-			final int pad = attrs.dropDownTextPadding;
+			final int pad = attrs.dropdownPadding;
 			tvOptionMenuLabel.setPadding( pad , pad , pad , pad );
 		}
 

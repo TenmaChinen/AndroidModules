@@ -7,7 +7,7 @@
 	android:layout_height="match_parent"
 	android:gravity="center"
 	android:orientation="vertical"
-	android:padding="50dp"
+	android:padding="40dp"
 	tools:context=".optionMenu.OptionMenuActivity">
 
 	<TextView
@@ -30,6 +30,9 @@
 		android:id="@+id/option_menu_b"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+
+		app:backgroundColor="@color/purple_200"
+		app:dropDownTextPadding="20dp"
 		app:textSize="18sp" />
 
 </LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="IntroWidgetTheme">
+		<item name="infoBackgroundColor">#FFFFFF</item>
+		<item name="infoTextColor">#2E2E2E</item>
+		<item name="infoTextSize">18sp</item>
+		<item name="infoTextStyle">normal</item>
+	</style>
+
+</resources>

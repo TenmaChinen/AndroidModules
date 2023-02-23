@@ -42,5 +42,5 @@ dependencies {
 	implementation project(path: ':SwitchCom')
 	implementation project(path: ':SplashActivity')
 	implementation project(path: ':SettingsManager')
-	implementation 'com.google.android.material:material:1.4.0'
+	implementation project(path: ':IntroWidget')
 }

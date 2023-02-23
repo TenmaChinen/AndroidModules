@@ -1,6 +1,7 @@
 package com.softramen.optionMenu;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,22 +53,20 @@ public class OptionMenuAdapter extends BaseAdapter {
 		if ( convertView == null ) {
 			convertView = layoutInflater.inflate( R.layout.option_menu_closed_item , parent , false );
 			convertView.setBackgroundColor( attrs.textBackgroundColor );
-			convertView.setPadding( attrs.padLeft, attrs.padTop, attrs.padRight, attrs.padBottom );
+			convertView.setPadding( attrs.padLeft , attrs.padTop , attrs.padRight , attrs.padBottom );
 
 			final TextView tvOptionMenuLabel = convertView.findViewById( R.id.tv_option_menu_label );
 			final ImageView ivOptionMenuArrow = convertView.findViewById( R.id.iv_option_menu_arrow );
 			tvOptionMenuLabel.setText( stringArray[ position ] );
 			tvOptionMenuLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX , attrs.textSize );
 			tvOptionMenuLabel.setTextColor( attrs.textColor );
-			tvOptionMenuLabel.setTypeface( tvOptionMenuLabel.getTypeface(), attrs.textStyle );
+			tvOptionMenuLabel.setTypeface( tvOptionMenuLabel.getTypeface() , attrs.textStyle );
 			tvOptionMenuLabel.setGravity( attrs.textGravity );
 			ivOptionMenuArrow.setMaxHeight( attrs.textSize / 3 );
 			ivOptionMenuArrow.setColorFilter( attrs.textColor );
 		}
 
-		if ( position != selectedPosition ) {
-			selectedPosition = position;
-		}
+		// selectedPosition = position;
 
 		return convertView;
 	}
@@ -76,20 +75,24 @@ public class OptionMenuAdapter extends BaseAdapter {
 	public View getDropDownView( final int position , View convertView , final ViewGroup parent ) {
 		if ( convertView == null ) {
 			convertView = layoutInflater.inflate( R.layout.option_menu_opened_item , parent , false );
-			convertView.setBackgroundColor( attrs.dropdownBackgroundColor );
 			final TextView tvOptionMenuLabel = convertView.findViewById( R.id.tv_option_menu_label );
 			tvOptionMenuLabel.setText( stringArray[ position ] );
 			tvOptionMenuLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX , attrs.textSize );
 			tvOptionMenuLabel.setTextColor( attrs.textColor );
-			tvOptionMenuLabel.setTypeface( tvOptionMenuLabel.getTypeface(), attrs.textStyle );
+			tvOptionMenuLabel.setTypeface( tvOptionMenuLabel.getTypeface() , attrs.textStyle );
 			tvOptionMenuLabel.setGravity( attrs.textGravity );
 			final int pad = attrs.dropdownPadding;
 			tvOptionMenuLabel.setPadding( pad , pad , pad , pad );
 		}
 
-		if ( position == selectedPosition ) {
-			convertView.setBackgroundColor( attrs.selectedBackgroundColor );
-		}
+		if ( position == selectedPosition ) convertView.setBackgroundColor( attrs.selectedBackgroundColor );
+		else convertView.setBackgroundColor( attrs.dropdownBackgroundColor );
+
 		return convertView;
+	}
+
+	public void setSelectedPosition( final int position ) {
+		selectedPosition = position;
+		notifyDataSetChanged();
 	}
 }

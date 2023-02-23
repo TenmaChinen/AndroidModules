@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<TextView
+		android:id="@+id/tv_info"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="20dp"
+		android:elevation="5dp"
+		android:layout_gravity="center_horizontal"
+		android:textColor="?attr/infoTextColor"
+		android:textSize="?attr/infoTextSize"
+		android:background="@drawable/info_tv_background"
+		android:textStyle="?attr/infoTextStyle" />
+
+	<ImageView
+		android:id="@+id/iv_dot"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:contentDescription="@string/dot_image_view"
+		android:src="@drawable/dot_shape"
+		android:visibility="invisible" />
+
+</FrameLayout>

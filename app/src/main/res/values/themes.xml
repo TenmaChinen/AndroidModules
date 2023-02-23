@@ -1,15 +1,22 @@
 <resources>
-    <!-- Base application theme. -->
+	<!-- Base application theme. -->
 
-    <style name="Theme.Application" parent="Theme.AppCompat.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+	<style name="Theme.Application" parent="Theme.AppCompat.NoActionBar">
+		<!-- Primary brand color. -->
+		<item name="colorPrimary">@color/purple_500</item>
 
-        <!-- Customize your theme here. -->
-        <item name="android:windowFullscreen">true</item>
-        <item name="fontFamily">@font/connection</item>
+		<!-- Customize your theme here. -->
+		<item name="android:windowFullscreen">true</item>
+		<item name="fontFamily">@font/connection</item>
 
-    </style>
+	</style>
 
+	<!-- To Override IntroWidget Default Theme -->
+	<style name="IntroViewThemeCustom" parent="@style/IntroWidgetTheme">
+		 <item name="infoTextColor">#FFFFFF</item>
+		<item name="infoBackgroundColor">#075B75</item>
+		<item name="infoTextSize">20sp</item>
+		<item name="infoTextStyle">bold</item>
+	</style>
 
 </resources>

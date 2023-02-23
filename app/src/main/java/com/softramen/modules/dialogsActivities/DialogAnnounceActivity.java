@@ -22,9 +22,9 @@ public class DialogAnnounceActivity extends AppCompatActivity {
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.activity_dialog_announce );
 
-		final ActivityDialogAnnounceBinding activityDialogAnnounceBinding;
-		activityDialogAnnounceBinding = DataBindingUtil.setContentView( this , R.layout.activity_dialog_announce );
-		activityDialogAnnounceBinding.setClickListener( onClickListener );
+		final ActivityDialogAnnounceBinding bind;
+		bind = DataBindingUtil.setContentView( this , R.layout.activity_dialog_announce );
+		bind.setClickListener( onClickListener );
 		showAnnounceDialog();
 	}
 

@@ -25,7 +25,8 @@ public class DialogRetryActivity extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_retry_dialog );
 
-        final ActivityRetryDialogBinding binding = DataBindingUtil.setContentView( this , R.layout.activity_retry_dialog );
+        final ActivityRetryDialogBinding binding;
+        binding = DataBindingUtil.setContentView( this , R.layout.activity_retry_dialog );
         binding.setClickListener( onClickListener );
     }
 

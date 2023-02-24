@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import com.softramen.introView.IntroWidget;
-import com.softramen.introView.shape.ShapeType;
+import com.softramen.introView.shapes.ShapeType;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityIntroWidgetBinding;
 

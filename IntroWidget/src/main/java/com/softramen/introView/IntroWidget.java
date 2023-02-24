@@ -9,9 +9,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -24,15 +23,14 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.ContextThemeWrapper;
-import com.softramen.introView.animation.AnimationFactory;
-import com.softramen.introView.animation.AnimationListener;
-import com.softramen.introView.animation.IntroListener;
-import com.softramen.introView.shape.Circle;
-import com.softramen.introView.shape.FocusGravity;
-import com.softramen.introView.shape.FocusType;
-import com.softramen.introView.shape.Rect;
-import com.softramen.introView.shape.Shape;
-import com.softramen.introView.shape.ShapeType;
+import com.softramen.introView.animations.AnimatorFactory;
+import com.softramen.introView.animations.IntroListener;
+import com.softramen.introView.shapes.Circle;
+import com.softramen.introView.shapes.FocusGravity;
+import com.softramen.introView.shapes.FocusType;
+import com.softramen.introView.shapes.Rect;
+import com.softramen.introView.shapes.Shape;
+import com.softramen.introView.shapes.ShapeType;
 import com.softramen.introView.utils.Constants;
 import com.softramen.introView.utils.Utils;
 
@@ -46,7 +44,7 @@ public class IntroWidget extends FrameLayout {
 	// No draw IntroWidget until isReady field set to true
 	private boolean isReady = false;
 
-	// Show/Dismiss IntroWidget with fade in/out animation if this is enabled.
+	// Show/Dismiss IntroWidget with fade in/out animations if this is enabled.
 	private boolean isFadeAnimationEnabled = true;
 
 	private final long fadeAnimationDuration = Constants.DEFAULT_FADE_DURATION;
@@ -65,7 +63,7 @@ public class IntroWidget extends FrameLayout {
 	private Handler handler;
 	private Bitmap focusBitmap;
 
-	private int circlePadding = Constants.DEFAULT_PADDING;
+	private int focusPadding = Constants.DEFAULT_PADDING;
 	private int layoutWidth;
 	private int layoutHeight;
 
@@ -133,6 +131,7 @@ public class IntroWidget extends FrameLayout {
 		inflate( getContext() , R.layout.layout_intro , this );
 
 		tvInfo = this.findViewById( R.id.tv_info );
+
 		dotView = this.findViewById( R.id.iv_dot );
 		dotView.measure( MeasureSpec.UNSPECIFIED , MeasureSpec.UNSPECIFIED );
 
@@ -157,11 +156,8 @@ public class IntroWidget extends FrameLayout {
 	private void createFocusBitmap( final int layoutWidth , final int layoutHeight ) {
 		focusBitmap = Bitmap.createBitmap( layoutWidth , layoutHeight , Config.ARGB_4444 );
 		final Canvas canvas = new Canvas( focusBitmap );
-		// Draw mask
-		canvas.drawColor( Color.TRANSPARENT , PorterDuff.Mode.CLEAR );
 		canvas.drawColor( maskColor );
-		// Clear focusType area
-		targetShape.draw( canvas , eraser , circlePadding );
+		targetShape.draw( canvas , eraser , focusPadding );
 	}
 
 	@Override
@@ -228,12 +224,8 @@ public class IntroWidget extends FrameLayout {
 		setReady();
 		handler.postDelayed( () -> {
 			if ( isFadeAnimationEnabled ) {
-				AnimationFactory.animateFadeIn( IntroWidget.this , fadeAnimationDuration , new AnimationListener() {
-					@Override
-					public void onAnimationStart() {
-						setVisibility( VISIBLE );
-					}
-				} );
+				AnimatorFactory.animateFadeIn( IntroWidget.this , fadeAnimationDuration );
+
 			} else {
 				setVisibility( VISIBLE );
 			}
@@ -251,15 +243,17 @@ public class IntroWidget extends FrameLayout {
 			preferenceManager.setDisplayed( introViewId );
 		}
 
-		AnimationFactory.animateFadeOut( this , fadeAnimationDuration , new AnimationListener() {
-			@Override
-			public void onAnimationEnd() {
-				setVisibility( GONE );
-				removeIntroLayout();
+		if ( isFadeAnimationEnabled ) {
+			AnimatorFactory.animateFadeOut( this , fadeAnimationDuration , animation -> afterDismissIntroLayout());
+		} else {
+			afterDismissIntroLayout();
+		}
+	}
 
-				if ( introListener != null ) introListener.onUserClicked( introViewId );
-			}
-		} );
+	private void afterDismissIntroLayout() {
+		setVisibility( GONE );
+		removeIntroLayout();
+		if ( introListener != null ) introListener.onUserClicked( introViewId );
 	}
 
 	private void removeIntroLayout() {
@@ -298,7 +292,7 @@ public class IntroWidget extends FrameLayout {
 			dotView.setLayoutParams( dotViewLayoutParams );
 			dotView.postInvalidate();
 			dotView.setVisibility( VISIBLE );
-			AnimationFactory.performAnimation( dotView );
+			AnimatorFactory.performAnimation( dotView );
 		} );
 	}
 
@@ -336,8 +330,8 @@ public class IntroWidget extends FrameLayout {
 		this.targetShape = shape;
 	}
 
-	private void setCirclePadding( final int circlePadding ) {
-		this.circlePadding = circlePadding;
+	private void setFocusPadding( final int circlePadding ) {
+		this.focusPadding = circlePadding;
 	}
 
 	private void setDismissOnTouch( final boolean dismissOnTouch ) {
@@ -352,18 +346,25 @@ public class IntroWidget extends FrameLayout {
 		this.tvInfo.setText( tvInfo );
 	}
 
-	private void setColorTextViewInfo( final int colorTextViewInfo ) {
+	private void setColorTextInfo( final int colorTextViewInfo ) {
 		tvInfo.setTextColor( colorTextViewInfo );
 	}
 
-	private void setTextViewInfoSize( final int textViewInfoSize ) {
+	private void setTextInfoSize( final int textViewInfoSize ) {
 		this.tvInfo.setTextSize( TypedValue.COMPLEX_UNIT_SP , textViewInfoSize );
+	}
 
+	private void setTextInfoStyle( final int fontStyle ) {
+		this.tvInfo.setTypeface( this.tvInfo.getTypeface() , fontStyle );
 	}
 
 	private void setTextInfoBackgroundColor( final int color ) {
-		final Drawable backgroundDrawable = this.tvInfo.getBackground();
-		backgroundDrawable.setColorFilter( color , Mode.SRC_ATOP );
+		final GradientDrawable gradientDrawable;
+		gradientDrawable = ( GradientDrawable ) AppCompatResources.getDrawable( getContext() , R.drawable.info_tv_background );
+		if ( gradientDrawable != null ) {
+			gradientDrawable.setColor( color );
+			tvInfo.setBackground( gradientDrawable );
+		}
 	}
 
 	private void enableInfoDialog() {
@@ -381,15 +382,17 @@ public class IntroWidget extends FrameLayout {
 	public void setConfiguration( final IntroConfig config ) {
 
 		if ( config != null ) {
-			if ( config.isTextInfoColorSet() ) setColorTextViewInfo( config.getTextInfoColor() );
-			if ( config.isTextInfoSizeSet() ) setTextViewInfoSize( config.getTextInfoSize() );
+			if ( config.isTextInfoColorSet() ) setColorTextInfo( config.getTextInfoColor() );
+			if ( config.isTextInfoSizeSet() ) setTextInfoSize( config.getTextInfoSize() );
+			if ( config.isTextInfoBackgroundColorSet() ) setTextInfoBackgroundColor( config.getTextInfoBackgroundColor() );
+			if ( config.isTextInfoStyleSet() ) setTextInfoStyle( config.getTextInfoStyle() );
 
 			this.isFadeAnimationEnabled = config.isFadeAnimationEnabled();
 			this.isDotViewEnabled = config.isDotViewEnabled();
 			this.dismissOnTouch = config.isDismissOnTouch();
 			this.focusGravity = config.getFocusGravity();
 			this.delayMillis = config.getDelayMillis();
-			this.circlePadding = config.getPadding();
+			this.focusPadding = config.getFocusPadding();
 			this.maskColor = config.getMaskColor();
 			this.focusType = config.getFocusType();
 		}
@@ -459,12 +462,12 @@ public class IntroWidget extends FrameLayout {
 		}
 
 		public Builder setTargetPadding( final int padding ) {
-			introWidget.setCirclePadding( padding );
+			introWidget.setFocusPadding( padding );
 			return this;
 		}
 
 		public Builder setTextColor( final int textColor ) {
-			introWidget.setColorTextViewInfo( textColor );
+			introWidget.setColorTextInfo( textColor );
 			return this;
 		}
 
@@ -475,7 +478,7 @@ public class IntroWidget extends FrameLayout {
 		}
 
 		public Builder setTextViewInfoSize( final int textSize ) {
-			introWidget.setTextViewInfoSize( textSize );
+			introWidget.setTextInfoSize( textSize );
 			return this;
 		}
 
@@ -515,7 +518,7 @@ public class IntroWidget extends FrameLayout {
 			return this;
 		}
 
-		public Builder setConfiguration( final IntroConfig configuration ) {
+		public Builder setConfig( final IntroConfig configuration ) {
 			introWidget.setConfiguration( configuration );
 			return this;
 		}
@@ -525,9 +528,9 @@ public class IntroWidget extends FrameLayout {
 
 			final Shape shape;
 			if ( introWidget.targetShapeType == ShapeType.CIRCLE ) {
-				shape = new Circle( introWidget.introTarget , introWidget.focusType , introWidget.focusGravity , introWidget.circlePadding );
+				shape = new Circle( introWidget.introTarget , introWidget.focusType , introWidget.focusGravity , introWidget.focusPadding );
 			} else {
-				shape = new Rect( introWidget.introTarget , introWidget.focusType , introWidget.focusGravity , introWidget.circlePadding );
+				shape = new Rect( introWidget.introTarget , introWidget.focusType , introWidget.focusGravity , introWidget.focusPadding );
 			}
 
 			introWidget.setShape( shape );
@@ -535,9 +538,8 @@ public class IntroWidget extends FrameLayout {
 		}
 
 
-		public IntroWidget show() {
+		public void show() {
 			build().show( activity );
-			return introWidget;
 		}
 	}
 }

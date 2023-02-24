@@ -1,4 +1,4 @@
-package com.softramen.introView.shape;
+package com.softramen.introView.shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

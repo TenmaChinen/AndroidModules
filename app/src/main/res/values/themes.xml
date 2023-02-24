@@ -13,10 +13,10 @@
 
 	<!-- To Override IntroWidget Default Theme -->
 	<style name="IntroViewThemeCustom" parent="@style/IntroWidgetTheme">
-		 <item name="infoTextColor">#FFFFFF</item>
+		 <item name="infoTextColor">#393333</item>
 		<item name="infoBackgroundColor">#075B75</item>
 		<item name="infoTextSize">20sp</item>
-		<item name="infoTextStyle">bold</item>
+<!--		<item name="infoTextStyle">bold</item>-->
 	</style>
 
 </resources>

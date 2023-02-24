@@ -1,4 +1,4 @@
-package com.softramen.introView.animation;
+package com.softramen.introView.animations;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -7,29 +7,19 @@ import android.animation.ValueAnimator;
 import android.view.View;
 import androidx.annotation.NonNull;
 
-public class AnimationFactory {
+public class AnimatorFactory {
 
-	public static void animateFadeIn( final View view , final long duration , final AnimationListener animationListener ) {
-		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat( view , "alpha" , 0f , 1f );
+	public static void animateFadeIn( final View view , final long duration ) {
+		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat( view , View.ALPHA , 0f , 1f );
 		objectAnimator.setDuration( duration );
-		objectAnimator.addListener( new AnimatorListener() {
-			@Override
-			public void onAnimationStart( @NonNull final Animator animation ) {
-				if ( animationListener != null ) animationListener.onAnimationStart();
-			}
-		} );
+		objectAnimator.addListener( ( AnimatorStartListener ) animation -> view.setVisibility( View.VISIBLE ) );
 		objectAnimator.start();
 	}
 
-	public static void animateFadeOut( final View view , final long duration , final AnimationListener animationListener ) {
+	public static void animateFadeOut( final View view , final long duration , final AnimatorEndListener animatorEndListener ) {
 		final ObjectAnimator objectAnimator = ObjectAnimator.ofFloat( view , View.ALPHA , 1 , 0 );
 		objectAnimator.setDuration( duration );
-		objectAnimator.addListener( new AnimatorListener() {
-			@Override
-			public void onAnimationEnd( @NonNull final Animator animation ) {
-				if ( animationListener != null ) animationListener.onAnimationEnd();
-			}
-		} );
+		objectAnimator.addListener( animatorEndListener );
 		objectAnimator.start();
 	}
 

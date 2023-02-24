@@ -4,7 +4,6 @@
 	<attr name="infoBackgroundColor" format="reference|color" />
 	<attr name="infoTextColor" format="reference|color" />
 	<attr name="infoTextSize" format="reference|dimension" />
-
 	<attr name="infoTextStyle" format="flags">
 		<flag name="normal" value="0" />
 		<flag name="bold" value="1" />

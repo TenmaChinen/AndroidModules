@@ -1,4 +1,4 @@
-package com.softramen.introView.animation;
+package com.softramen.introView.animations;
 
 public interface AnimationListener {
 	default void onAnimationStart() {}

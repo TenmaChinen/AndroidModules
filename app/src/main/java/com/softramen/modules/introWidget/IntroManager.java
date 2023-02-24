@@ -1,15 +1,14 @@
 package com.softramen.modules.introWidget;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.view.View;
 import com.softramen.introView.IntroConfig;
 import com.softramen.introView.IntroWidget;
-import com.softramen.introView.shape.FocusGravity;
-import com.softramen.introView.shape.FocusType;
-import com.softramen.introView.shape.ShapeType;
-import com.softramen.modules.R;
+import com.softramen.introView.shapes.FocusGravity;
+import com.softramen.introView.shapes.FocusType;
+import com.softramen.introView.shapes.ShapeType;
 
 public class IntroManager {
 
@@ -23,14 +22,23 @@ public class IntroManager {
 
 	private IntroConfig setIntroConfig() {
 		final IntroConfig introConfig = new IntroConfig();
-		introConfig.setFocusGravity( FocusGravity.CENTER );
+
+		// Text Info Config
+		introConfig.setTextInfoSize( 18 );
+		introConfig.setTextInfoStyle( Typeface.BOLD );
 		// introConfig.setTextInfoColor( Color.WHITE );
-		// introConfig.setTextInfoSize( 18 );
+		// introConfig.setTextInfoBackgroundColor( Color.YELLOW );
+
+		// Focus Config
+		introConfig.setFocusGravity( FocusGravity.CENTER );
 		introConfig.setFocusType( FocusType.NORMAL );
-		introConfig.setFadeAnimationEnabled( true );
+		introConfig.setFocusPadding( 50 );
+
+		// Others
 		// introConfig.setDotViewEnabled( true );
+		introConfig.setFadeAnimationEnabled( true );
 		introConfig.setDelayMillis( 200 );
-		introConfig.setPadding( 50 );
+
 		return introConfig;
 	}
 
@@ -48,13 +56,13 @@ public class IntroManager {
 	}
 
 	public IntroWidget.Builder makeIntro( final View target , final String message , final ShapeType shapeType ) {
-		// return new IntroWidget.Builder( activity )
-		return new IntroWidget.Builder( activity , R.style.IntroViewThemeCustom )
+		return new IntroWidget.Builder( activity )
+		// return new IntroWidget.Builder( activity , R.style.IntroViewThemeCustom )
 				.setTarget( target )
 				// .performClick( true )
 				.setShape( shapeType )
 				.setUsageId( String.valueOf( System.nanoTime() ) )
 				.setInfoText( message )
-				.setConfiguration( introConfig );
+				.setConfig( introConfig );
 	}
 }

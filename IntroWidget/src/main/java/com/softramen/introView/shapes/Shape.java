@@ -1,4 +1,4 @@
-package com.softramen.introView.shape;
+package com.softramen.introView.shapes;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -49,6 +49,6 @@ public abstract class Shape {
 
 	public abstract int getHeight();
 
-	// Determines if a click is on the shape
+	// Determines if a click is on the shapes
 	public abstract boolean isTouchOnFocus( double x , double t );
 }

@@ -1,7 +1,7 @@
 package com.softramen.introView;
 
-import com.softramen.introView.shape.FocusGravity;
-import com.softramen.introView.shape.FocusType;
+import com.softramen.introView.shapes.FocusGravity;
+import com.softramen.introView.shapes.FocusType;
 import com.softramen.introView.utils.Constants;
 
 public class IntroConfig {
@@ -12,10 +12,12 @@ public class IntroConfig {
 	private long delayMillis = Constants.DEFAULT_DELAY_MILLIS;
 	private FocusGravity focusGravity = FocusGravity.CENTER;
 	private int maskColor = Constants.DEFAULT_MASK_COLOR;
-	private int padding = Constants.DEFAULT_PADDING;
+	private int focusPadding = Constants.DEFAULT_PADDING;
 
 	private int textInfoColor = Constants.NONE;
 	private int textInfoSize = Constants.NONE;
+	private int textInfoBackgroundColor = Constants.NONE;
+	private int textInfoStyle = Constants.NONE;
 
 	// G E T T E R S
 	public int getMaskColor() {
@@ -34,8 +36,8 @@ public class IntroConfig {
 		return focusGravity;
 	}
 
-	public int getPadding() {
-		return padding;
+	public int getFocusPadding() {
+		return focusPadding;
 	}
 
 	public int getTextInfoColor() {
@@ -44,6 +46,13 @@ public class IntroConfig {
 
 	public int getTextInfoSize() {
 		return textInfoSize;
+	}
+
+	public int getTextInfoBackgroundColor() {
+		return textInfoBackgroundColor;
+	}
+	public int getTextInfoStyle() {
+		return textInfoStyle;
 	}
 
 	// S E T T E R S
@@ -66,8 +75,8 @@ public class IntroConfig {
 		this.focusGravity = focusGravity;
 	}
 
-	public void setPadding( final int padding ) {
-		this.padding = padding;
+	public void setFocusPadding( final int padding ) {
+		this.focusPadding = padding;
 	}
 
 	public void setDismissOnTouch( final boolean dismissOnTouch ) {
@@ -84,6 +93,14 @@ public class IntroConfig {
 
 	public void setTextInfoSize( final int textInfoSize ) {
 		this.textInfoSize = textInfoSize;
+	}
+
+	public void setTextInfoBackgroundColor( final int textInfoBackgroundColor ) {
+		this.textInfoBackgroundColor = textInfoBackgroundColor;
+	}
+
+	public void setTextInfoStyle( final int textInfoStyle ) {
+		this.textInfoStyle = textInfoStyle;
 	}
 
 	// Checkers
@@ -106,5 +123,13 @@ public class IntroConfig {
 
 	public boolean isTextInfoSizeSet() {
 		return textInfoSize != Constants.NONE;
+	}
+
+	public boolean isTextInfoBackgroundColorSet() {
+		return textInfoBackgroundColor != Constants.NONE;
+	}
+
+	public boolean isTextInfoStyleSet() {
+		return textInfoStyle != Constants.NONE;
 	}
 }

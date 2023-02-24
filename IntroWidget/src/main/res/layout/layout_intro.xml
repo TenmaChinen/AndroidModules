@@ -23,6 +23,6 @@
 		android:layout_height="wrap_content"
 		android:contentDescription="@string/dot_image_view"
 		android:src="@drawable/dot_shape"
-		android:visibility="invisible" />
+		android:visibility="gone" />
 
 </FrameLayout>

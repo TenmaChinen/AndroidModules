@@ -33,9 +33,10 @@ public class introWidgetActivity extends AppCompatActivity {
 		final ImageView imageView = bind.imageView;
 
 		final IntroManager introManager = new IntroManager( activity );
-		final IntroWidget.Builder introText = introManager.makeIntro( textView , "This is the TextView" , ShapeType.RECTANGLE );
-		final IntroWidget.Builder introButton = introManager.makeIntro( button , "This is the Button" , ShapeType.RECTANGLE );
-		final IntroWidget.Builder introImage = introManager.makeIntro( imageView , "This is the ImageView" , ShapeType.CIRCLE );
+		final IntroWidget introText = introManager.makeIntro( textView , "This is the TextView" , ShapeType.RECTANGLE, null , false);
+		final IntroWidget introButton = introManager.makeIntro( button , "This is the Button" , ShapeType.RECTANGLE, null, false );
+		final IntroWidget introImage = introManager.makeIntro( imageView , "This is the ImageView" , ShapeType.CIRCLE, null, false );
+
 		introManager.showIntroSequence( introText , introButton , introImage );
 	}
 

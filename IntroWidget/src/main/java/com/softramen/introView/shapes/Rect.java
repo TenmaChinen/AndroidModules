@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import com.softramen.introView.IntroTarget;
 
 public class Rect extends Shape {
+	private final String TAG = "INTRO_RECT";
 	private RectF adjustedRect;
 
 	public Rect( final IntroTarget introTarget ) {
@@ -25,14 +26,13 @@ public class Rect extends Shape {
 	}
 
 	@Override
-	public void draw( final Canvas canvas , final Paint eraser , final int padding ) {
-		canvas.drawRoundRect( adjustedRect , padding , padding , eraser );
+	public void draw( final Canvas canvas , final Paint eraser , final int radius ) {
+		canvas.drawRoundRect( adjustedRect , radius , radius , eraser );
 	}
 
 	private void calculateAdjustedRect() {
 		final RectF rect = new RectF();
 		rect.set( introTarget.getRect() );
-
 		rect.left -= padding;
 		rect.top -= padding;
 		rect.right += padding;

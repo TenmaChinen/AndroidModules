@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
@@ -13,7 +12,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,63 +36,45 @@ public class IntroWidget extends FrameLayout {
 
 	private int maskColor = Constants.DEFAULT_MASK_COLOR;
 
-	// IntroWidget will start showing after delayMillis seconds passed
-	private long delayMillis = Constants.DEFAULT_DELAY_MILLIS;
-
-	// No draw IntroWidget until isReady field set to true
+	// Prevents from drawing IntroWidget until isReady
 	private boolean isReady = false;
+	private long startDelayMillis = Constants.DEFAULT_START_DELAY_MILLIS;
 
 	// Show/Dismiss IntroWidget with fade in/out animations if this is enabled.
 	private boolean isFadeAnimationEnabled = true;
-
 	private final long fadeAnimationDuration = Constants.DEFAULT_FADE_DURATION;
 
 	// targetShape focusType on introTarget and clear circle to focusType
+	private FocusGravity focusGravity = FocusGravity.CENTER;
+	private FocusType focusType = FocusType.ALL;
+	private final Paint eraser = new Paint();
+	private IntroTarget introTarget;
 	private Shape targetShape;
 
-
-	// FocusType Type
-	private FocusType focusType = FocusType.ALL;
-	private FocusGravity focusGravity = FocusGravity.CENTER;
-	private IntroTarget introTarget;
-	private Paint eraser;
-
 	// Used to delay IntroWidget
-	private Handler handler;
+	private final Handler handler = new Handler();
 	private Bitmap focusBitmap;
 
 	private int focusPadding = Constants.DEFAULT_PADDING;
-	private int layoutWidth;
-	private int layoutHeight;
+	private int layoutWidth, layoutHeight;
 
 	private TextView tvInfo;
 	private View dotView;
 
+	private boolean isShowOnlyOnce = true;
+	private boolean isDotViewEnabled = false;
 	private boolean dismissOnTouch = false;
 	private boolean isInfoEnabled = false;
-	private boolean isDotViewEnabled = false;
 
-	// To show Intro only the first time
 	private PreferenceManager preferenceManager;
+	private String introId;
 
-	// Check using this Id whether user learned or not.
-	private String introViewId;
-
-	// When layout completed set this true -> Otherwise onGlobalLayoutListener stuck on loop.
 	private boolean isLayoutCompleted = false;
-
-	// Notify user when IntroWidget is dismissed
-	private IntroListener introListener;
-
-	// To perform click on View after user touch dismiss the introView
+	private IntroListener introListener = null;
 	private boolean isPerformClick = false;
-
-	// Disallow this IntroWidget from showing up more than once at a time
-	private boolean isIdempotent = false;
 	private boolean isDismissed = false;
 
 	private ShapeType targetShapeType = ShapeType.CIRCLE;
-	private boolean usesCustomShape = false;
 
 	public IntroWidget( final Context context ) {
 		super( context );
@@ -120,10 +100,8 @@ public class IntroWidget extends FrameLayout {
 		setWillNotDraw( false );
 		setVisibility( INVISIBLE );
 
-		handler = new Handler();
 		preferenceManager = new PreferenceManager( context );
 
-		eraser = new Paint();
 		eraser.setColor( 0xFFFFFFFF );
 		eraser.setXfermode( new PorterDuffXfermode( PorterDuff.Mode.CLEAR ) );
 		eraser.setFlags( Paint.ANTI_ALIAS_FLAG );
@@ -131,15 +109,17 @@ public class IntroWidget extends FrameLayout {
 		inflate( getContext() , R.layout.layout_intro , this );
 
 		tvInfo = this.findViewById( R.id.tv_info );
-
 		dotView = this.findViewById( R.id.iv_dot );
 		dotView.measure( MeasureSpec.UNSPECIFIED , MeasureSpec.UNSPECIFIED );
+
+		createTargetShape();
 
 		getViewTreeObserver().addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
 				targetShape.reCalculateAll();
-				if ( targetShape != null && targetShape.getPoint().y != 0 && !isLayoutCompleted ) {
+				if ( targetShape.getPoint().y != 0 && !isLayoutCompleted ) {
+					createFocusBitmap();
 					if ( isInfoEnabled ) setInfoLayout();
 					if ( isDotViewEnabled ) setDotViewLayout();
 					removeOnGlobalLayoutListener( IntroWidget.this , this );
@@ -153,11 +133,24 @@ public class IntroWidget extends FrameLayout {
 		viewTreeObserver.removeOnGlobalLayoutListener( listener );
 	}
 
-	private void createFocusBitmap( final int layoutWidth , final int layoutHeight ) {
+	private void createFocusBitmap() {
 		focusBitmap = Bitmap.createBitmap( layoutWidth , layoutHeight , Config.ARGB_4444 );
 		final Canvas canvas = new Canvas( focusBitmap );
 		canvas.drawColor( maskColor );
 		targetShape.draw( canvas , eraser , focusPadding );
+	}
+
+	private void createTargetShape() {
+		handler.post( () -> {
+			final Shape targetShape;
+
+			if ( targetShapeType == ShapeType.CIRCLE ) {
+				targetShape = new Circle( introTarget , focusType , focusGravity , focusPadding );
+			} else {
+				targetShape = new Rect( introTarget , focusType , focusGravity , focusPadding );
+			}
+			setTargetShape( targetShape );
+		} );
 	}
 
 	@Override
@@ -165,7 +158,6 @@ public class IntroWidget extends FrameLayout {
 		super.onMeasure( widthMeasureSpec , heightMeasureSpec );
 		layoutWidth = getMeasuredWidth();
 		layoutHeight = getMeasuredHeight();
-		createFocusBitmap( layoutWidth , layoutHeight );
 	}
 
 	@Override
@@ -212,10 +204,33 @@ public class IntroWidget extends FrameLayout {
 		return super.onTouchEvent( motionEvent );
 	}
 
-	// Show Intro ViewGroup fade In
-	private void show( final Activity activity ) {
+	private void dismissIntroLayout() {
+		isDismissed = true;
 
-		if ( preferenceManager.isDisplayed( introViewId ) ) return;
+		if ( isShowOnlyOnce ) preferenceManager.setDisplayed( introId );
+
+		if ( isFadeAnimationEnabled ) {
+			AnimatorFactory.animateFadeOut( this , fadeAnimationDuration , animation -> afterDismissIntroLayout() );
+		} else {
+			afterDismissIntroLayout();
+		}
+	}
+
+	private void afterDismissIntroLayout() {
+		setVisibility( GONE );
+		removeIntroLayout();
+		if ( introListener != null ) introListener.onUserClicked( introId );
+	}
+
+	private void removeIntroLayout() {
+		if ( getParent() != null ) ( ( ViewGroup ) getParent() ).removeView( this );
+	}
+
+	public void show( final Activity activity ) {
+		if ( preferenceManager.isDisplayed( introId ) ) {
+			if ( introListener != null ) introListener.onUserClicked( introId );
+			return;
+		}
 
 		final Window window = activity.getWindow();
 		final ViewGroup decorView = ( ViewGroup ) window.getDecorView();
@@ -225,39 +240,14 @@ public class IntroWidget extends FrameLayout {
 		handler.postDelayed( () -> {
 			if ( isFadeAnimationEnabled ) {
 				AnimatorFactory.animateFadeIn( IntroWidget.this , fadeAnimationDuration );
-
 			} else {
 				setVisibility( VISIBLE );
 			}
-		} , delayMillis );
-
-		if ( isIdempotent ) {
-			preferenceManager.setDisplayed( introViewId );
-		}
+		} , startDelayMillis );
 	}
 
-	// Dismiss Intro View
-	public void dismissIntroLayout() {
-		isDismissed = true;
-		if ( !isIdempotent ) {
-			preferenceManager.setDisplayed( introViewId );
-		}
-
-		if ( isFadeAnimationEnabled ) {
-			AnimatorFactory.animateFadeOut( this , fadeAnimationDuration , animation -> afterDismissIntroLayout());
-		} else {
-			afterDismissIntroLayout();
-		}
-	}
-
-	private void afterDismissIntroLayout() {
-		setVisibility( GONE );
-		removeIntroLayout();
-		if ( introListener != null ) introListener.onUserClicked( introViewId );
-	}
-
-	private void removeIntroLayout() {
-		if ( getParent() != null ) ( ( ViewGroup ) getParent() ).removeView( this );
+	public boolean isAlreadyIntroduced() {
+		return preferenceManager.isDisplayed( introId );
 	}
 
 	// Locate Info TextView above/below the TargetShape.
@@ -265,7 +255,6 @@ public class IntroWidget extends FrameLayout {
 	private void setInfoLayout() {
 
 		handler.post( () -> {
-			isLayoutCompleted = true;
 
 			final Point targetPoint = targetShape.getPoint();
 			final int offsetY = ( int ) ( targetShape.getHeight() / 1.5f );
@@ -279,6 +268,8 @@ public class IntroWidget extends FrameLayout {
 			tvInfo.setY( infoPosY );
 			tvInfo.postInvalidate();
 			tvInfo.setVisibility( VISIBLE );
+
+			isLayoutCompleted = true;
 		} );
 	}
 
@@ -302,8 +293,8 @@ public class IntroWidget extends FrameLayout {
 		this.maskColor = maskColor;
 	}
 
-	private void setDelay( final int delayMillis ) {
-		this.delayMillis = delayMillis;
+	private void setStartDelay( final int delayMillis ) {
+		this.startDelayMillis = delayMillis;
 	}
 
 	private void enableFadeAnimation( final boolean isFadeAnimationEnabled ) {
@@ -326,8 +317,8 @@ public class IntroWidget extends FrameLayout {
 		this.focusType = focusType;
 	}
 
-	private void setShape( final Shape shape ) {
-		this.targetShape = shape;
+	private void setTargetShape( final Shape targetShape ) {
+		this.targetShape = targetShape;
 	}
 
 	private void setFocusPadding( final int circlePadding ) {
@@ -350,8 +341,8 @@ public class IntroWidget extends FrameLayout {
 		tvInfo.setTextColor( colorTextViewInfo );
 	}
 
-	private void setTextInfoSize( final int textViewInfoSize ) {
-		this.tvInfo.setTextSize( TypedValue.COMPLEX_UNIT_SP , textViewInfoSize );
+	private void setTextInfoSize( final int unit , final int textViewInfoSize ) {
+		this.tvInfo.setTextSize( unit , textViewInfoSize );
 	}
 
 	private void setTextInfoStyle( final int fontStyle ) {
@@ -371,38 +362,22 @@ public class IntroWidget extends FrameLayout {
 		this.isInfoEnabled = true;
 	}
 
-	private void setIdempotent( final boolean idempotent ) {
-		this.isIdempotent = idempotent;
+	private void setShowOnlyOnce( final boolean showOnlyOnce ) {
+		this.isShowOnlyOnce = showOnlyOnce;
+		if ( !showOnlyOnce ) {
+			preferenceManager.reset( introId );
+		}
 	}
 
 	private void enableDotView( final boolean enable ) {
 		this.isDotViewEnabled = enable;
 	}
 
-	public void setConfiguration( final IntroConfig config ) {
-
-		if ( config != null ) {
-			if ( config.isTextInfoColorSet() ) setColorTextInfo( config.getTextInfoColor() );
-			if ( config.isTextInfoSizeSet() ) setTextInfoSize( config.getTextInfoSize() );
-			if ( config.isTextInfoBackgroundColorSet() ) setTextInfoBackgroundColor( config.getTextInfoBackgroundColor() );
-			if ( config.isTextInfoStyleSet() ) setTextInfoStyle( config.getTextInfoStyle() );
-
-			this.isFadeAnimationEnabled = config.isFadeAnimationEnabled();
-			this.isDotViewEnabled = config.isDotViewEnabled();
-			this.dismissOnTouch = config.isDismissOnTouch();
-			this.focusGravity = config.getFocusGravity();
-			this.delayMillis = config.getDelayMillis();
-			this.focusPadding = config.getFocusPadding();
-			this.maskColor = config.getMaskColor();
-			this.focusType = config.getFocusType();
-		}
-	}
-
 	private void setUsageId( final String introLayoutId ) {
-		this.introViewId = introLayoutId;
+		this.introId = introLayoutId;
 	}
 
-	private void setListener( final IntroListener introListener ) {
+	public void setListener( final IntroListener introListener ) {
 		this.introListener = introListener;
 	}
 
@@ -410,18 +385,35 @@ public class IntroWidget extends FrameLayout {
 		this.isPerformClick = isPerformClick;
 	}
 
+	private void setConfiguration( final IntroConfig config ) {
+		if ( config != null ) {
+			if ( config.isTextInfoColorSet() ) setColorTextInfo( config.getTextInfoColor() );
+			if ( config.isTextInfoSizeSet() ) setTextInfoSize( config.getTextInfoSizeUnit() , config.getTextInfoSize() );
+			if ( config.isTextInfoBackgroundColorSet() ) setTextInfoBackgroundColor( config.getTextInfoBackgroundColor() );
+			if ( config.isTextInfoStyleSet() ) setTextInfoStyle( config.getTextInfoStyle() );
+
+			this.isFadeAnimationEnabled = config.isFadeAnimationEnabled();
+			this.isDotViewEnabled = config.isDotViewEnabled();
+			this.dismissOnTouch = config.isDismissOnTouch();
+			this.focusGravity = config.getFocusGravity();
+			this.startDelayMillis = config.getStartDelayMillis();
+			this.focusPadding = config.getFocusPadding();
+			this.maskColor = config.getMaskColor();
+			this.focusType = config.getFocusType();
+		}
+	}
+
+	// B U I L D E R
 
 	public static class Builder {
-
+		private final String TAG = "INTRO_BUILDER";
 		private final IntroWidget introWidget;
-		private final Activity activity;
 
 		public Builder( final Activity activity ) {
 			this( activity , R.style.IntroWidgetTheme );
 		}
 
 		public Builder( final Activity activity , final int resourceTheme ) {
-			this.activity = activity;
 			final ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper( activity , resourceTheme );
 			introWidget = new IntroWidget( contextThemeWrapper );
 		}
@@ -432,7 +424,7 @@ public class IntroWidget extends FrameLayout {
 		}
 
 		public Builder setDelayMillis( final int delayMillis ) {
-			introWidget.setDelay( delayMillis );
+			introWidget.setStartDelay( delayMillis );
 			return this;
 		}
 
@@ -441,8 +433,8 @@ public class IntroWidget extends FrameLayout {
 			return this;
 		}
 
-		public Builder setShape( final ShapeType shape ) {
-			introWidget.setTargetShapeType( shape );
+		public Builder setTargetShapeType( final ShapeType shapeType ) {
+			introWidget.setTargetShapeType( shapeType );
 			return this;
 		}
 
@@ -457,7 +449,8 @@ public class IntroWidget extends FrameLayout {
 		}
 
 		public Builder setTarget( final View view ) {
-			introWidget.setTarget( new IntroTarget( view ) );
+			final IntroTarget introTarget = new IntroTarget( view );
+			introWidget.setTarget( introTarget );
 			return this;
 		}
 
@@ -477,8 +470,8 @@ public class IntroWidget extends FrameLayout {
 			return this;
 		}
 
-		public Builder setTextViewInfoSize( final int textSize ) {
-			introWidget.setTextInfoSize( textSize );
+		public Builder setTextViewInfoSize( final int unit , final int textSize ) {
+			introWidget.setTextInfoSize( unit , textSize );
 			return this;
 		}
 
@@ -497,19 +490,13 @@ public class IntroWidget extends FrameLayout {
 			return this;
 		}
 
-		public Builder setIdempotent( final boolean idempotent ) {
-			introWidget.setIdempotent( idempotent );
+		public Builder setShowOnlyOnce( final boolean showOnlyOnce ) {
+			introWidget.setShowOnlyOnce( showOnlyOnce );
 			return this;
 		}
 
 		public Builder setListener( final IntroListener introListener ) {
 			introWidget.setListener( introListener );
-			return this;
-		}
-
-		public Builder setCustomShape( final Shape shape ) {
-			introWidget.usesCustomShape = true;
-			introWidget.setShape( shape );
 			return this;
 		}
 
@@ -524,22 +511,12 @@ public class IntroWidget extends FrameLayout {
 		}
 
 		public IntroWidget build() {
-			if ( introWidget.usesCustomShape ) return introWidget;
-
-			final Shape shape;
-			if ( introWidget.targetShapeType == ShapeType.CIRCLE ) {
-				shape = new Circle( introWidget.introTarget , introWidget.focusType , introWidget.focusGravity , introWidget.focusPadding );
-			} else {
-				shape = new Rect( introWidget.introTarget , introWidget.focusType , introWidget.focusGravity , introWidget.focusPadding );
-			}
-
-			introWidget.setShape( shape );
 			return introWidget;
 		}
 
-
-		public void show() {
-			build().show( activity );
+		public void show( final Activity activity ) {
+			final IntroWidget introWidget = build();
+			introWidget.show( activity );
 		}
 	}
 }

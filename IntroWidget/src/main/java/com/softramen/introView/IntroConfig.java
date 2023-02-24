@@ -7,15 +7,16 @@ import com.softramen.introView.utils.Constants;
 public class IntroConfig {
 	private boolean isFadeAnimationEnabled = Constants.DEFAULT_FADE_ANIMATION_ENABLED;
 	private boolean isDotViewEnabled = Constants.DEFAULT_DOT_VIEW_ENABLED;
+	private long startDelayMillis = Constants.DEFAULT_START_DELAY_MILLIS;
 	private boolean dismissOnTouch = Constants.DEFAULT_DISMISS_ON_TOUCH;
 	private FocusType focusType = Constants.DEFAULT_FOCUS_TYPE;
-	private long delayMillis = Constants.DEFAULT_DELAY_MILLIS;
 	private FocusGravity focusGravity = FocusGravity.CENTER;
 	private int maskColor = Constants.DEFAULT_MASK_COLOR;
 	private int focusPadding = Constants.DEFAULT_PADDING;
 
 	private int textInfoColor = Constants.NONE;
 	private int textInfoSize = Constants.NONE;
+	private int textInfoSizeUnit = Constants.NONE;
 	private int textInfoBackgroundColor = Constants.NONE;
 	private int textInfoStyle = Constants.NONE;
 
@@ -24,8 +25,8 @@ public class IntroConfig {
 		return maskColor;
 	}
 
-	public long getDelayMillis() {
-		return delayMillis;
+	public long getStartDelayMillis() {
+		return startDelayMillis;
 	}
 
 	public FocusType getFocusType() {
@@ -48,6 +49,10 @@ public class IntroConfig {
 		return textInfoSize;
 	}
 
+	public int getTextInfoSizeUnit() {
+		return textInfoSizeUnit;
+	}
+
 	public int getTextInfoBackgroundColor() {
 		return textInfoBackgroundColor;
 	}
@@ -60,8 +65,8 @@ public class IntroConfig {
 	public void setMaskColor( final int maskColor ) {
 		this.maskColor = maskColor;
 	}
-	public void setDelayMillis( final long delayMillis ) {
-		this.delayMillis = delayMillis;
+	public void setStartDelayMillis( final long startDelayMillis ) {
+		this.startDelayMillis = startDelayMillis;
 	}
 
 	public void setFadeAnimationEnabled( final boolean fadeAnimationEnabled ) {
@@ -91,8 +96,9 @@ public class IntroConfig {
 		this.textInfoColor = textInfoColor;
 	}
 
-	public void setTextInfoSize( final int textInfoSize ) {
+	public void setTextInfoSize( final int unit , final int textInfoSize ) {
 		this.textInfoSize = textInfoSize;
+		this.textInfoSizeUnit = unit;
 	}
 
 	public void setTextInfoBackgroundColor( final int textInfoBackgroundColor ) {
@@ -123,6 +129,10 @@ public class IntroConfig {
 
 	public boolean isTextInfoSizeSet() {
 		return textInfoSize != Constants.NONE;
+	}
+
+	public boolean isTextInfoSizeUnitSet() {
+		return textInfoSizeUnit != Constants.NONE;
 	}
 
 	public boolean isTextInfoBackgroundColorSet() {

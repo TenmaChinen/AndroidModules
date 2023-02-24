@@ -3,6 +3,7 @@ package com.softramen.introView.shapes;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import com.softramen.introView.IntroTarget;
 
 public class Circle extends Shape {
@@ -31,28 +32,17 @@ public class Circle extends Shape {
 
 	private void calculateRadius( final int padding ) {
 		final int side;
+		final Rect rect = introTarget.getRect();
+		final int halfWidth = rect.width() / 2;
+		final int halfHeight = rect.height() / 2;
 
-		if ( focusType == FocusType.MINIMUM ) side = Math.min( introTarget
-				.getRect()
-				.width() / 2 , introTarget
-				.getRect()
-				.height() / 2 );
-		else if ( focusType == FocusType.ALL ) side = Math.max( introTarget
-				.getRect()
-				.width() / 2 , introTarget
-				.getRect()
-				.height() / 2 );
-		else {
-			final int minSide = Math.min( introTarget
-					.getRect()
-					.width() / 2 , introTarget
-					.getRect()
-					.height() / 2 );
-			final int maxSide = Math.max( introTarget
-					.getRect()
-					.width() / 2 , introTarget
-					.getRect()
-					.height() / 2 );
+		if ( focusType == FocusType.MINIMUM ) {
+			side = Math.min( halfWidth , halfHeight );
+		} else if ( focusType == FocusType.ALL ) {
+			side = Math.max( halfWidth , halfHeight );
+		} else {
+			final int minSide = Math.min( halfWidth , halfHeight );
+			final int maxSide = Math.max( halfWidth , halfHeight );
 			side = ( minSide + maxSide ) / 2;
 		}
 

@@ -18,23 +18,16 @@ public class PreferenceManager {
 	}
 
 	public void setDisplayed( final String id ) {
-		sharedPreferences
-				.edit()
-				.putBoolean( id , true )
-				.apply();
+		sharedPreferences.edit().putBoolean( id , true ).apply();
 	}
 
 	public void reset( final String id ) {
-		sharedPreferences
-				.edit()
-				.putBoolean( id , false )
-				.apply();
+		if ( sharedPreferences.contains( id ) ) {
+			sharedPreferences.edit().putBoolean( id , false ).apply();
+		}
 	}
 
 	public void resetAll() {
-		sharedPreferences
-				.edit()
-				.clear()
-				.apply();
+		sharedPreferences.edit().clear().apply();
 	}
 }

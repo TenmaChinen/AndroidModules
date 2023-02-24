@@ -1,11 +1,9 @@
 package com.softramen.introView.animations;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.view.View;
-import androidx.annotation.NonNull;
 
 public class AnimatorFactory {
 

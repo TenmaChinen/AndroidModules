@@ -9,7 +9,7 @@ public class Constants {
 	public static boolean DEFAULT_DISMISS_ON_TOUCH = true;
 	public static int DEFAULT_MASK_COLOR = 0x70000000;
 	public static long DEFAULT_FADE_DURATION = 500;
-	public static long DEFAULT_DELAY_MILLIS = 0;
+	public static long DEFAULT_START_DELAY_MILLIS = 0;
 	public static int DEFAULT_DOT_SIZE = 30;
 	public static int DEFAULT_PADDING = 50;
 	public static int NONE = -1;

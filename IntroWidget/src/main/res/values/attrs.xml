@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<attr name="infoBackgroundColor" format="reference|color" />
 	<attr name="infoTextColor" format="reference|color" />
 	<attr name="infoTextSize" format="reference|dimension" />
+	<attr name="infoBackgroundColor" format="reference|color" />
+	<attr name="focusPadding" format="reference|dimension" />
 	<attr name="infoTextStyle" format="flags">
 		<flag name="normal" value="0" />
 		<flag name="bold" value="1" />

@@ -3,6 +3,7 @@ package com.softramen.modules.introWidget;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.View;
 import com.softramen.introView.IntroConfig;
 import com.softramen.introView.IntroWidget;
@@ -11,6 +12,7 @@ import com.softramen.introView.shapes.FocusType;
 import com.softramen.introView.shapes.ShapeType;
 
 public class IntroManager {
+	private final String TAG = "INTRO_MANAGER";
 
 	private final IntroConfig introConfig;
 	private final Activity activity;
@@ -23,46 +25,49 @@ public class IntroManager {
 	private IntroConfig setIntroConfig() {
 		final IntroConfig introConfig = new IntroConfig();
 
-		// Text Info Config
-		introConfig.setTextInfoSize( 18 );
+		// TEXT INFO CONFIG
+		introConfig.setTextInfoSize( TypedValue.COMPLEX_UNIT_SP , 20 );
 		introConfig.setTextInfoStyle( Typeface.BOLD );
 		// introConfig.setTextInfoColor( Color.WHITE );
 		// introConfig.setTextInfoBackgroundColor( Color.YELLOW );
 
-		// Focus Config
+		// FOCUS CONFIG
 		introConfig.setFocusGravity( FocusGravity.CENTER );
 		introConfig.setFocusType( FocusType.NORMAL );
 		introConfig.setFocusPadding( 50 );
 
-		// Others
+		// OTHERS
 		// introConfig.setDotViewEnabled( true );
 		introConfig.setFadeAnimationEnabled( true );
-		introConfig.setDelayMillis( 200 );
+		introConfig.setStartDelayMillis( 200 );
+		introConfig.setDismissOnTouch( false );
 
 		return introConfig;
 	}
 
-	public void showIntroSequence( final IntroWidget.Builder... args ) {
+	public void showIntroSequence( final IntroWidget... args ) {
+		if ( args[ args.length - 1 ].isAlreadyIntroduced() ) return;
+
 		for ( int idx = 0 ; idx < args.length ; idx++ ) {
-			final IntroWidget.Builder builders = args[ idx ];
+			final IntroWidget introWidget = args[ idx ];
 			if ( idx < args.length - 1 ) {
 				final int nextIdx = idx + 1;
-				builders.setListener( introViewId -> args[ nextIdx ].show() );
+				introWidget.setListener( introViewId -> args[ nextIdx ].show( activity ) );
 			}
 		}
 		final Handler handler = new Handler();
-		handler.postDelayed( () -> args[ 0 ].show() , 500 );
-
+		handler.postDelayed( () -> args[ 0 ].show( activity ) , 500 );
 	}
 
-	public IntroWidget.Builder makeIntro( final View target , final String message , final ShapeType shapeType ) {
+	public IntroWidget makeIntro( final View target , final String message , final ShapeType shapeType , final String id , final boolean performClick ) {
 		return new IntroWidget.Builder( activity )
-		// return new IntroWidget.Builder( activity , R.style.IntroViewThemeCustom )
+				// return new IntroWidget.Builder( activity , R.style.IntroViewThemeCustom )
 				.setTarget( target )
-				// .performClick( true )
-				.setShape( shapeType )
-				.setUsageId( String.valueOf( System.nanoTime() ) )
+				.performClick( performClick )
+				.setTargetShapeType( shapeType )
+				.setUsageId( ( id == null ) ? String.valueOf( System.nanoTime() ) : id )
 				.setInfoText( message )
-				.setConfig( introConfig );
+				.setConfig( introConfig )
+				.build();
 	}
 }

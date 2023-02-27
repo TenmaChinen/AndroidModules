@@ -1,6 +1,7 @@
 package com.softramen.introView;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -246,6 +247,26 @@ public class IntroWidget extends FrameLayout {
 		} , startDelayMillis );
 	}
 
+	public void show( final Dialog dialog ) {
+		if ( preferenceManager.isDisplayed( introId ) ) {
+			if ( introListener != null ) introListener.onUserClicked( introId );
+			return;
+		}
+
+		final Window window = dialog.getWindow();
+		final ViewGroup decorView = ( ViewGroup ) window.getDecorView();
+		decorView.addView( this );
+
+		setReady();
+		handler.postDelayed( () -> {
+			if ( isFadeAnimationEnabled ) {
+				AnimatorFactory.animateFadeIn( IntroWidget.this , fadeAnimationDuration );
+			} else {
+				setVisibility( VISIBLE );
+			}
+		} , startDelayMillis );
+	}
+
 	public boolean isAlreadyIntroduced() {
 		return preferenceManager.isDisplayed( introId );
 	}
@@ -265,6 +286,7 @@ public class IntroWidget extends FrameLayout {
 			} else {
 				infoPosY = targetPoint.y - offsetY - tvInfo.getMeasuredHeight();
 			}
+			tvInfo.setMaxWidth( ( int ) ( layoutWidth * 0.8 ) );
 			tvInfo.setY( infoPosY );
 			tvInfo.postInvalidate();
 			tvInfo.setVisibility( VISIBLE );
@@ -406,15 +428,14 @@ public class IntroWidget extends FrameLayout {
 	// B U I L D E R
 
 	public static class Builder {
-		private final String TAG = "INTRO_BUILDER";
 		private final IntroWidget introWidget;
 
-		public Builder( final Activity activity ) {
-			this( activity , R.style.IntroWidgetTheme );
+		public Builder( final Context context ) {
+			this( context , R.style.IntroWidgetTheme );
 		}
 
-		public Builder( final Activity activity , final int resourceTheme ) {
-			final ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper( activity , resourceTheme );
+		public Builder( final Context context , final int resourceTheme ) {
+			final ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper( context , resourceTheme );
 			introWidget = new IntroWidget( contextThemeWrapper );
 		}
 
@@ -517,6 +538,11 @@ public class IntroWidget extends FrameLayout {
 		public void show( final Activity activity ) {
 			final IntroWidget introWidget = build();
 			introWidget.show( activity );
+		}
+
+		public void show( final Dialog dialog ) {
+			final IntroWidget introWidget = build();
+			introWidget.show( dialog );
 		}
 	}
 }

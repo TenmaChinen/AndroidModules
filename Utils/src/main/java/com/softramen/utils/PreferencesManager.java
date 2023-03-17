@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 public class PreferencesManager {
 	private final String TAG = "PREFERENCES_MANAGER";
 
-	private static final String KEY_PREFERENCES = "com.softramen.$APP_NAME$.KEY_PREFERENCES";
-	private static final String KEY_MUTE = "com.softramen.$APP_NAME$.KEY_MUTE";
+	private static final String KEY_PREFERENCES = "com.softramen.app_name.PREFERENCES";
+	private static final String KEY_MUTE = "MUTE";
 
 	private static PreferencesManager instance;
 	private final SharedPreferences sharedPreferences;

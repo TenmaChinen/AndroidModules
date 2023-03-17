@@ -67,7 +67,7 @@ public class IntroWidget extends FrameLayout {
 	private boolean dismissOnTouch = false;
 	private boolean isInfoEnabled = false;
 
-	private PreferenceManager preferenceManager;
+	private IntroPreferenceManager introPreferenceManager;
 	private String introId;
 
 	private boolean isLayoutCompleted = false;
@@ -101,7 +101,7 @@ public class IntroWidget extends FrameLayout {
 		setWillNotDraw( false );
 		setVisibility( INVISIBLE );
 
-		preferenceManager = new PreferenceManager( context );
+		introPreferenceManager = new IntroPreferenceManager( context );
 
 		eraser.setColor( 0xFFFFFFFF );
 		eraser.setXfermode( new PorterDuffXfermode( PorterDuff.Mode.CLEAR ) );
@@ -208,7 +208,7 @@ public class IntroWidget extends FrameLayout {
 	private void dismissIntroLayout() {
 		isDismissed = true;
 
-		if ( isShowOnlyOnce ) preferenceManager.setDisplayed( introId );
+		if ( isShowOnlyOnce ) introPreferenceManager.setDisplayed( introId );
 
 		if ( isFadeAnimationEnabled ) {
 			AnimatorFactory.animateFadeOut( this , fadeAnimationDuration , animation -> afterDismissIntroLayout() );
@@ -228,35 +228,22 @@ public class IntroWidget extends FrameLayout {
 	}
 
 	public void show( final Activity activity ) {
-		if ( preferenceManager.isDisplayed( introId ) ) {
-			if ( introListener != null ) introListener.onUserClicked( introId );
-			return;
-		}
-
+		if ( isDisplayed() ) return;
 		final Window window = activity.getWindow();
 		final ViewGroup decorView = ( ViewGroup ) window.getDecorView();
 		decorView.addView( this );
-
-		setReady();
-		handler.postDelayed( () -> {
-			if ( isFadeAnimationEnabled ) {
-				AnimatorFactory.animateFadeIn( IntroWidget.this , fadeAnimationDuration );
-			} else {
-				setVisibility( VISIBLE );
-			}
-		} , startDelayMillis );
+		showIntro();
 	}
 
 	public void show( final Dialog dialog ) {
-		if ( preferenceManager.isDisplayed( introId ) ) {
-			if ( introListener != null ) introListener.onUserClicked( introId );
-			return;
-		}
-
+		if ( isDisplayed() ) return;
 		final Window window = dialog.getWindow();
 		final ViewGroup decorView = ( ViewGroup ) window.getDecorView();
 		decorView.addView( this );
+		showIntro();
+	}
 
+	private void showIntro() {
 		setReady();
 		handler.postDelayed( () -> {
 			if ( isFadeAnimationEnabled ) {
@@ -267,8 +254,16 @@ public class IntroWidget extends FrameLayout {
 		} , startDelayMillis );
 	}
 
+	private boolean isDisplayed() {
+		if ( isAlreadyIntroduced() ) {
+			if ( introListener != null ) introListener.onUserClicked( introId );
+			return true;
+		}
+		return false;
+	}
+
 	public boolean isAlreadyIntroduced() {
-		return preferenceManager.isDisplayed( introId );
+		return introPreferenceManager.isDisplayed( introId );
 	}
 
 	// Locate Info TextView above/below the TargetShape.
@@ -367,6 +362,10 @@ public class IntroWidget extends FrameLayout {
 		this.tvInfo.setTextSize( unit , textViewInfoSize );
 	}
 
+	private void setTextInfoAlignment( final int textAlignment ) {
+		this.tvInfo.setTextAlignment( textAlignment );
+	}
+
 	private void setTextInfoStyle( final int fontStyle ) {
 		this.tvInfo.setTypeface( this.tvInfo.getTypeface() , fontStyle );
 	}
@@ -387,7 +386,7 @@ public class IntroWidget extends FrameLayout {
 	private void setShowOnlyOnce( final boolean showOnlyOnce ) {
 		this.isShowOnlyOnce = showOnlyOnce;
 		if ( !showOnlyOnce ) {
-			preferenceManager.reset( introId );
+			introPreferenceManager.reset( introId );
 		}
 	}
 
@@ -412,6 +411,7 @@ public class IntroWidget extends FrameLayout {
 			if ( config.isTextInfoColorSet() ) setColorTextInfo( config.getTextInfoColor() );
 			if ( config.isTextInfoSizeSet() ) setTextInfoSize( config.getTextInfoSizeUnit() , config.getTextInfoSize() );
 			if ( config.isTextInfoBackgroundColorSet() ) setTextInfoBackgroundColor( config.getTextInfoBackgroundColor() );
+			if ( config.isTextInfoAlignmentSet() ) setTextInfoAlignment( config.getTextInfoAlignment() );
 			if ( config.isTextInfoStyleSet() ) setTextInfoStyle( config.getTextInfoStyle() );
 
 			this.isFadeAnimationEnabled = config.isFadeAnimationEnabled();
@@ -493,6 +493,11 @@ public class IntroWidget extends FrameLayout {
 
 		public Builder setTextViewInfoSize( final int unit , final int textSize ) {
 			introWidget.setTextInfoSize( unit , textSize );
+			return this;
+		}
+
+		public Builder setTextViewInfoAlignment( final int textAlignment ) {
+			introWidget.setTextInfoAlignment( textAlignment );
 			return this;
 		}
 

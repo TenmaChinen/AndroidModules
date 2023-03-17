@@ -14,6 +14,7 @@
 		android:layout_gravity="center_horizontal"
 		android:textColor="?attr/infoTextColor"
 		android:textSize="?attr/infoTextSize"
+		android:textAlignment="?attr/infoTextAlignment"
 		android:background="@drawable/info_tv_background"
 		android:textStyle="?attr/infoTextStyle" />
 

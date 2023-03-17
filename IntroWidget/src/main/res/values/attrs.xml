@@ -10,5 +10,14 @@
 		<flag name="bold" value="1" />
 		<flag name="italic" value="2" />
 	</attr>
+	<attr name="infoTextAlignment" format="integer">
+		<enum name="inherit" value="0" />
+		<enum name="gravity" value="1" />
+		<enum name="textStart" value="2" />
+		<enum name="textEnd" value="3" />
+		<enum name="center" value="4" />
+		<enum name="viewStart" value="5" />
+		<enum name="viewEnd" value="6" />
+	</attr>
 
 </resources>

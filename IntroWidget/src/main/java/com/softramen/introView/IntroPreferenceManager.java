@@ -3,14 +3,14 @@ package com.softramen.introView;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class PreferenceManager {
+public class IntroPreferenceManager {
 
-	private static final String PREFERENCES_NAME = "com.softramen.introView.PREFERENCES_NAME";
+	private static final String KEY_PREFERENCES = "com.softramen.introView.PREFERENCES";
 
 	private final SharedPreferences sharedPreferences;
 
-	public PreferenceManager( final Context context ) {
-		sharedPreferences = context.getSharedPreferences( PREFERENCES_NAME , Context.MODE_PRIVATE );
+	public IntroPreferenceManager( final Context context ) {
+		sharedPreferences = context.getSharedPreferences( KEY_PREFERENCES , Context.MODE_PRIVATE );
 	}
 
 	public boolean isDisplayed( final String id ) {

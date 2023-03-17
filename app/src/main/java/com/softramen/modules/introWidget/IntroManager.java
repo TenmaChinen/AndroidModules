@@ -1,11 +1,13 @@
 package com.softramen.modules.introWidget;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.TypedValue;
 import android.view.View;
 import com.softramen.introView.IntroConfig;
+import com.softramen.introView.IntroPreferenceManager;
 import com.softramen.introView.IntroWidget;
 import com.softramen.introView.shapes.FocusGravity;
 import com.softramen.introView.shapes.FocusType;
@@ -14,12 +16,16 @@ import com.softramen.introView.shapes.ShapeType;
 public class IntroManager {
 	private final String TAG = "INTRO_MANAGER";
 
+	private final Handler handler = new Handler();
 	private final IntroConfig introConfig;
-	private final Activity activity;
+	private final Context context;
+	private final IntroPreferenceManager introPreferenceManager;
 
-	public IntroManager( final Activity activity ) {
-		this.activity = activity;
+	public IntroManager( final Context context ) {
+		this.context = context;
 		introConfig = setIntroConfig();
+		introPreferenceManager = new IntroPreferenceManager( context );
+		// introPreferenceManager.resetAll();
 	}
 
 	private IntroConfig setIntroConfig() {
@@ -28,6 +34,7 @@ public class IntroManager {
 		// TEXT INFO CONFIG
 		introConfig.setTextInfoSize( TypedValue.COMPLEX_UNIT_SP , 20 );
 		introConfig.setTextInfoStyle( Typeface.BOLD );
+		// introConfig.setTextInfoAlignment( View.TEXT_ALIGNMENT_TEXT_END );
 		// introConfig.setTextInfoColor( Color.WHITE );
 		// introConfig.setTextInfoBackgroundColor( Color.YELLOW );
 
@@ -45,27 +52,30 @@ public class IntroManager {
 		return introConfig;
 	}
 
-	public void showIntroSequence( final IntroWidget... args ) {
-		if ( args[ args.length - 1 ].isAlreadyIntroduced() ) return;
+	public void showIntroSequence( final Activity activity , final View textView , final View button , final View imageView ) {
+		final String introGroupId = "IntroGroupId";
+		// This pattern centralized in some Singleton class to not read everytime
+		// if ( introPreferenceManager.isDisplayed( introGroupId ) ) return;
 
-		for ( int idx = 0 ; idx < args.length ; idx++ ) {
-			final IntroWidget introWidget = args[ idx ];
-			if ( idx < args.length - 1 ) {
-				final int nextIdx = idx + 1;
-				introWidget.setListener( introViewId -> args[ nextIdx ].show( activity ) );
-			}
-		}
-		final Handler handler = new Handler();
-		handler.postDelayed( () -> args[ 0 ].show( activity ) , 500 );
+		final IntroWidget introA = makeIntro( textView , "TextView\nIntro" , ShapeType.RECTANGLE , "TextView" , false );
+		final IntroWidget introB = makeIntro( button , "Button\nIntro" , ShapeType.RECTANGLE , "Button" , false );
+		final IntroWidget introC = makeIntro( imageView , "ImageView\nIntro" , ShapeType.CIRCLE , "ImageView" , false );
+
+		introA.setListener( ( id ) -> introB.show( activity ) );
+		introB.setListener( ( id ) -> introC.show( activity ) );
+		introC.setListener( ( id ) -> introPreferenceManager.setDisplayed( introGroupId ) ); // Use this to avoid overhead once intro is fully learned
+
+		handler.postDelayed( () -> introA.show( activity ) , 500 );
 	}
 
 	public IntroWidget makeIntro( final View target , final String message , final ShapeType shapeType , final String id , final boolean performClick ) {
-		return new IntroWidget.Builder( activity )
+		return new IntroWidget.Builder( context )
 				// return new IntroWidget.Builder( activity , R.style.IntroViewThemeCustom )
 				.setTarget( target )
 				.performClick( performClick )
 				.setTargetShapeType( shapeType )
-				.setUsageId( ( id == null ) ? String.valueOf( System.nanoTime() ) : id )
+				.setUsageId( id )
+				.setShowOnlyOnce( false )
 				.setInfoText( message )
 				.setConfig( introConfig )
 				.build();

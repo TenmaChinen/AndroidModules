@@ -5,6 +5,7 @@
 		<item name="infoBackgroundColor">#FFFFFF</item>
 		<item name="infoTextColor">#2E2E2E</item>
 		<item name="infoTextSize">18sp</item>
+		<item name="infoTextAlignment">center</item>
 		<item name="infoTextStyle">normal</item>
 	</style>
 

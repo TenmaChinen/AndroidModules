@@ -4,13 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import com.softramen.introView.IntroWidget;
-import com.softramen.introView.shapes.ShapeType;
 import com.softramen.modules.R;
 import com.softramen.modules.databinding.ActivityIntroWidgetBinding;
 
@@ -28,16 +23,8 @@ public class introWidgetActivity extends AppCompatActivity {
 		bind = DataBindingUtil.setContentView( this , R.layout.activity_intro_widget );
 		bind.setClickListener( this::onClick );
 
-		final TextView textView = bind.textView;
-		final Button button = bind.button;
-		final ImageView imageView = bind.imageView;
-
-		final IntroManager introManager = new IntroManager( activity );
-		final IntroWidget introText = introManager.makeIntro( textView , "This is the TextView" , ShapeType.RECTANGLE, null , false);
-		final IntroWidget introButton = introManager.makeIntro( button , "This is the Button" , ShapeType.RECTANGLE, null, false );
-		final IntroWidget introImage = introManager.makeIntro( imageView , "This is the ImageView" , ShapeType.CIRCLE, null, false );
-
-		introManager.showIntroSequence( introText , introButton , introImage );
+		final IntroManager introManagerA = new IntroManager( activity );
+		introManagerA.showIntroSequence( activity, bind.textView, bind.button, bind.imageView );
 	}
 
 	public void onClick( final View view ) {

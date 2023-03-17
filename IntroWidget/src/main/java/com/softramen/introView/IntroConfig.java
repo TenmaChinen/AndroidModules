@@ -19,6 +19,7 @@ public class IntroConfig {
 	private int textInfoSizeUnit = Constants.NONE;
 	private int textInfoBackgroundColor = Constants.NONE;
 	private int textInfoStyle = Constants.NONE;
+	private int textInfoAlignment = Constants.NONE;
 
 	// G E T T E R S
 	public int getMaskColor() {
@@ -56,6 +57,11 @@ public class IntroConfig {
 	public int getTextInfoBackgroundColor() {
 		return textInfoBackgroundColor;
 	}
+
+	public int getTextInfoAlignment() {
+		return textInfoAlignment;
+	}
+
 	public int getTextInfoStyle() {
 		return textInfoStyle;
 	}
@@ -105,6 +111,10 @@ public class IntroConfig {
 		this.textInfoBackgroundColor = textInfoBackgroundColor;
 	}
 
+	public void setTextInfoAlignment( final int textInfoAlignment ) {
+		this.textInfoAlignment = textInfoAlignment;
+	}
+
 	public void setTextInfoStyle( final int textInfoStyle ) {
 		this.textInfoStyle = textInfoStyle;
 	}
@@ -141,5 +151,9 @@ public class IntroConfig {
 
 	public boolean isTextInfoStyleSet() {
 		return textInfoStyle != Constants.NONE;
+	}
+
+	public boolean isTextInfoAlignmentSet() {
+		return textInfoAlignment != Constants.NONE;
 	}
 }

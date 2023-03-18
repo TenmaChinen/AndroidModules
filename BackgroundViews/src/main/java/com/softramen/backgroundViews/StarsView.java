@@ -23,13 +23,14 @@ public class StarsView extends View {
 		bmpStarArray = createBitmapStars();
 	}
 
-
 	@Override
 	protected void onDraw( final Canvas canvas ) {
 		super.onDraw( canvas );
-		canvas.drawBitmap( bmpBackground , 0 , 0 , null );
-		for ( final Bitmap bmpStar : bmpStarArray ) {
-			canvas.drawBitmap( bmpStar , getRandomPosX() , getRandomPosY() , null );
+		if ( bmpBackground != null && bmpStarArray != null ) {
+			canvas.drawBitmap( bmpBackground , 0 , 0 , null );
+			for ( final Bitmap bmpStar : bmpStarArray ) {
+				canvas.drawBitmap( bmpStar , getRandomPosX() , getRandomPosY() , null );
+			}
 		}
 	}
 

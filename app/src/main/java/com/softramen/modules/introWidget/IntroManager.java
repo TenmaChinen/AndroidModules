@@ -2,9 +2,12 @@ package com.softramen.modules.introWidget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.provider.CalendarContract.Colors;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import com.softramen.introView.IntroConfig;
 import com.softramen.introView.IntroPreferenceManager;
@@ -12,6 +15,7 @@ import com.softramen.introView.IntroWidget;
 import com.softramen.introView.shapes.FocusGravity;
 import com.softramen.introView.shapes.FocusType;
 import com.softramen.introView.shapes.ShapeType;
+import com.softramen.modules.Screen;
 
 public class IntroManager {
 	private final String TAG = "INTRO_MANAGER";
@@ -48,6 +52,11 @@ public class IntroManager {
 		introConfig.setFadeAnimationEnabled( true );
 		introConfig.setStartDelayMillis( 200 );
 		introConfig.setDismissOnTouch( false );
+
+		// OVERLAY SETTINGS
+		introConfig.setMaskColor( Color.argb( 100,200,10,10 ));
+		introConfig.setLayoutMargin( ( int ) ( Screen.HEIGHT * 0.2 ) );
+		introConfig.setLayoutGravity( Gravity.TOP );
 
 		return introConfig;
 	}

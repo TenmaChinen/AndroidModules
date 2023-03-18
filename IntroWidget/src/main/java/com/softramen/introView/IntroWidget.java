@@ -13,6 +13,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ import com.softramen.introView.utils.Constants;
 import com.softramen.introView.utils.Utils;
 
 public class IntroWidget extends FrameLayout {
-
+	private final String TAG = "INTRO_WIDGET";
 	private int maskColor = Constants.DEFAULT_MASK_COLOR;
 
 	// Prevents from drawing IntroWidget until isReady
@@ -57,15 +58,17 @@ public class IntroWidget extends FrameLayout {
 	private Bitmap focusBitmap;
 
 	private int focusPadding = Constants.DEFAULT_PADDING;
-	private int layoutWidth, layoutHeight;
+	private int layoutWidth = LayoutParams.MATCH_PARENT;
+	private int layoutHeight = LayoutParams.MATCH_PARENT;
+	private int layoutMargin = Constants.DEFAULT_LAYOUT_MARGIN;
+	private int layoutGravity = Gravity.NO_GRAVITY;
 
 	private TextView tvInfo;
 	private View dotView;
 
 	private boolean isShowOnlyOnce = true;
-	private boolean isDotViewEnabled = false;
-	private boolean dismissOnTouch = false;
-	private boolean isInfoEnabled = false;
+	private boolean isDotViewEnabled = Constants.DEFAULT_DOT_VIEW_ENABLED;
+	private boolean dismissOnTouch = Constants.DEFAULT_DISMISS_ON_TOUCH;
 
 	private IntroPreferenceManager introPreferenceManager;
 	private String introId;
@@ -74,6 +77,8 @@ public class IntroWidget extends FrameLayout {
 	private IntroListener introListener = null;
 	private boolean isPerformClick = false;
 	private boolean isDismissed = false;
+	private boolean isInfoEnabled = false;
+
 
 	private ShapeType targetShapeType = ShapeType.CIRCLE;
 
@@ -231,6 +236,7 @@ public class IntroWidget extends FrameLayout {
 		if ( isDisplayed() ) return;
 		final Window window = activity.getWindow();
 		final ViewGroup decorView = ( ViewGroup ) window.getDecorView();
+		initLayoutParams();
 		decorView.addView( this );
 		showIntro();
 	}
@@ -239,8 +245,20 @@ public class IntroWidget extends FrameLayout {
 		if ( isDisplayed() ) return;
 		final Window window = dialog.getWindow();
 		final ViewGroup decorView = ( ViewGroup ) window.getDecorView();
+		initLayoutParams();
 		decorView.addView( this );
 		showIntro();
+	}
+
+	private void initLayoutParams() {
+		final int screenHeight = this.getResources().getDisplayMetrics().heightPixels;
+		layoutHeight = screenHeight - layoutMargin;
+
+		final LayoutParams layoutParams = new LayoutParams( layoutWidth , layoutHeight );
+		if ( layoutGravity == Gravity.BOTTOM ) {
+			this.setY( layoutMargin );
+		}
+		this.setLayoutParams( layoutParams );
 	}
 
 	private void showIntro() {
@@ -422,6 +440,8 @@ public class IntroWidget extends FrameLayout {
 			this.focusPadding = config.getFocusPadding();
 			this.maskColor = config.getMaskColor();
 			this.focusType = config.getFocusType();
+			this.layoutMargin = config.getLayoutMargin();
+			this.layoutGravity = config.getLayoutGravity();
 		}
 	}
 
@@ -470,7 +490,7 @@ public class IntroWidget extends FrameLayout {
 		}
 
 		public Builder setTarget( final View view ) {
-			final IntroTarget introTarget = new IntroTarget( view );
+			final IntroTarget introTarget = new IntroTarget( view , introWidget );
 			introWidget.setTarget( introTarget );
 			return this;
 		}

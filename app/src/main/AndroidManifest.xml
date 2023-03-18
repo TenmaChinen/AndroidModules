@@ -16,36 +16,36 @@
 		tools:targetApi="31"
 		>
 		<activity
+			android:name=".backgroundViews.BackgroundViewsActivity"
+			android:exported="true"
+			>
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
 			android:name=".introWidget.introWidgetActivity"
 			android:exported="true"
 			>
-
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-
 		</activity>
 		<activity
 			android:name=".splashActivity.SecondActivity"
 			android:exported="true"
 			/>
-
 		<activity
 			android:name=".dialogsActivities.DialogSettingsActivity"
 			android:exported="true"
 			/>
-
 		<activity
 			android:name=".switchCom.SwitchComActivity"
 			android:exported="true"
 			/>
-
 		<activity
 			android:name=".optionMenu.OptionMenuActivity"
 			android:exported="true"
 			/>
-
 		<activity
 			android:name=".splashActivity.LaunchActivity"
 			android:exported="true"
@@ -55,7 +55,6 @@
 				android:value=""
 				/>
 		</activity>
-
 		<activity
 			android:name=".fadeRecyclerView.FadeRecyclerViewActivity"
 			android:exported="true"
@@ -65,7 +64,6 @@
 				android:value=""
 				/>
 		</activity>
-
 		<activity
 			android:name=".buttonsActivities.BiImageViewActivity"
 			android:exported="true"
@@ -74,9 +72,7 @@
 				android:name="android.app.lib_name"
 				android:value=""
 				/>
-
 		</activity>
-
 		<activity
 			android:name=".dialogsActivities.DialogRetryActivity"
 			android:exported="true"
@@ -86,7 +82,6 @@
 				android:value=""
 				/>
 		</activity>
-
 		<activity
 			android:name=".dialogsActivities.DialogAnnounceActivity"
 			android:exported="true"
@@ -96,7 +91,6 @@
 				android:value=""
 				/>
 		</activity>
-
 		<activity
 			android:name=".dialogsActivities.DialogConfirmActivity"
 			android:exported="true"
@@ -106,7 +100,6 @@
 				android:value=""
 				/>
 		</activity>
-
 	</application>
 
 </manifest>

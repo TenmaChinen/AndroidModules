@@ -1,5 +1,7 @@
 package com.softramen.introView;
 
+import android.view.Gravity;
+import android.widget.FrameLayout.LayoutParams;
 import com.softramen.introView.shapes.FocusGravity;
 import com.softramen.introView.shapes.FocusType;
 import com.softramen.introView.utils.Constants;
@@ -10,9 +12,11 @@ public class IntroConfig {
 	private long startDelayMillis = Constants.DEFAULT_START_DELAY_MILLIS;
 	private boolean dismissOnTouch = Constants.DEFAULT_DISMISS_ON_TOUCH;
 	private FocusType focusType = Constants.DEFAULT_FOCUS_TYPE;
+	private int layoutMargin = Constants.DEFAULT_LAYOUT_MARGIN;
 	private FocusGravity focusGravity = FocusGravity.CENTER;
 	private int maskColor = Constants.DEFAULT_MASK_COLOR;
 	private int focusPadding = Constants.DEFAULT_PADDING;
+	private int layoutGravity = Gravity.NO_GRAVITY;
 
 	private int textInfoColor = Constants.NONE;
 	private int textInfoSize = Constants.NONE;
@@ -66,6 +70,14 @@ public class IntroConfig {
 		return textInfoStyle;
 	}
 
+	public int getLayoutMargin() {
+		return layoutMargin;
+	}
+
+	public int getLayoutGravity() {
+		return layoutGravity;
+	}
+
 	// S E T T E R S
 
 	public void setMaskColor( final int maskColor ) {
@@ -117,6 +129,14 @@ public class IntroConfig {
 
 	public void setTextInfoStyle( final int textInfoStyle ) {
 		this.textInfoStyle = textInfoStyle;
+	}
+
+	public void setLayoutMargin( final int layoutMargin ) {
+		this.layoutMargin = layoutMargin;
+	}
+
+	public void setLayoutGravity( final int layoutGravity ) {
+		this.layoutGravity = layoutGravity;
 	}
 
 	// Checkers

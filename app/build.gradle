@@ -44,4 +44,5 @@ dependencies {
 	implementation project(path: ':SettingsManager')
 	implementation project(path: ':IntroWidget')
 	implementation project(path: ':BackgroundViews')
+	implementation project(path: ':ShadowImageView')
 }
